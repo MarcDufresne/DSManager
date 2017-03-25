@@ -6,6 +6,7 @@ import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
+import net.imatruck.dsmanager.models.DSTaskListBase;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -66,5 +67,12 @@ public interface SynologyAPI {
         @Query("ftp_max_download") Integer ftpMaxDownload,
         @Query("http_max_download") Integer httpMaxDownload,
         @Query("nzb_max_download") Integer nzbMaxDownload);
+
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=list&" +
+            "additional=transfer")
+    Call<DSTaskListBase> dsTaskList(@Header("Cookie") String sid);
 
 }

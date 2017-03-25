@@ -23,6 +23,7 @@ import net.imatruck.dsmanager.tasks.AuthLogoutTask;
 import net.imatruck.dsmanager.tasks.DSGetConfigTask;
 import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
+import net.imatruck.dsmanager.tasks.DSTaskListTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,6 +106,8 @@ public class TaskList extends AppCompatActivity {
                                 sid_header, 0, 0, null, null, null, null, null, null, null));
                         break;
                     case 6: //  DS Task List
+                        new DSTaskListTask(TaskList.this).execute(synologyApi.dsTaskList(sid_header));
+                        break;
                     case 7: //  DS Task Get Info
                     case 8: //  DS Task Create URI
                     case 9: // DS Task Create File
