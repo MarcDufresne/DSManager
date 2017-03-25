@@ -1,35 +1,43 @@
 package net.imatruck.dsmanager;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import net.imatruck.dsmanager.tasks.AuthLoginTask;
-import net.imatruck.dsmanager.tasks.ApiInfoTask;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
+import net.imatruck.dsmanager.tasks.ApiInfoTask;
+import net.imatruck.dsmanager.tasks.AuthLoginTask;
 import net.imatruck.dsmanager.tasks.AuthLogoutTask;
+import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TaskList extends AppCompatActivity {
-    @BindView(R.id.debug_api_button) Button debug_button;
-    @BindView(R.id.debug_api_spinner) Spinner debug_spinner;
-    @BindView(R.id.debug_api_text) TextView debug_text;
-    @BindView(R.id.debug_api_sid) TextView debug_text_sid;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.debug_api_button)
+    Button debug_button;
+    @BindView(R.id.debug_api_spinner)
+    Spinner debug_spinner;
+    @BindView(R.id.debug_api_text)
+    TextView debug_text;
+    @BindView(R.id.debug_api_sid)
+    TextView debug_text_sid;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     SynologyAPI synologyApi;
 
@@ -49,8 +57,7 @@ public class TaskList extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        SharedPreferences prefs = TaskList.this.getSharedPreferences(
-                getString(R.string.pref_key_shared_file), Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String sid = prefs.getString(getString(R.string.pref_key_sid), "");
         debug_text_sid.setText(sid);
 
@@ -68,34 +75,37 @@ public class TaskList extends AppCompatActivity {
         debug_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences prefs = TaskList.this.getSharedPreferences(
-                        getString(R.string.pref_key_shared_file), Context.MODE_PRIVATE);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+                        getApplicationContext());
                 String sid = prefs.getString(getString(R.string.pref_key_sid), "");
+                String sid_header = prefs.getString(getString(R.string.pref_key_sid_header), "");
 
                 switch (debug_spinner.getSelectedItemPosition()) {
                     case 0: // API Info
-                        new ApiInfoTask(TaskList.this).execute(synologyApi.getApiInfo());
+                        new ApiInfoTask(TaskList.this).execute(synologyApi.apiGetInfo());
                         break;
                     case 1: //  Auth Login
                         String account = prefs.getString(getString(R.string.pref_key_account), "");
                         String password = prefs.getString(getString(R.string.pref_key_password), "");
-                        new AuthLoginTask(TaskList.this).execute(synologyApi.login(account, password));
+                        new AuthLoginTask(TaskList.this).execute(synologyApi.authLogin(account, password));
                         break;
                     case 2: //  Auth Logout
-                        new AuthLogoutTask(TaskList.this).execute(synologyApi.logout(sid));
+                        new AuthLogoutTask(TaskList.this).execute(synologyApi.authLogout(sid));
                         break;
-                    case 4: //  DS Get Info
-                    case 5: //  DS Get Config
-                    case 6: //  DS Set Config
-                    case 7: //  DS Task List
-                    case 8: //  DS Task Get Info
-                    case 9: //  DS Task Create URI
-                    case 10: // DS Task Create File
-                    case 11: // DS Task Delete
-                    case 12: // DS Task Pause
-                    case 13: // DS Task Resume
-                    case 14: // DS Task Edit
-                    case 15: // DS Stats Info
+                    case 3: //  DS Get Info
+                        new DSGetInfoTask(TaskList.this).execute(synologyApi.dsGetInfo(sid_header));
+                        break;
+                    case 4: //  DS Get Config
+                    case 5: //  DS Set Config
+                    case 6: //  DS Task List
+                    case 7: //  DS Task Get Info
+                    case 8: //  DS Task Create URI
+                    case 9: // DS Task Create File
+                    case 10: // DS Task Delete
+                    case 11: // DS Task Pause
+                    case 12: // DS Task Resume
+                    case 13: // DS Task Edit
+                    case 14: // DS Stats Info
                     default:
                         break;
                 }
@@ -120,7 +130,8 @@ public class TaskList extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         }
 
         return super.onOptionsItemSelected(item);

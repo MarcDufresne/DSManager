@@ -2,9 +2,9 @@ package net.imatruck.dsmanager.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.TaskList;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,8 +17,7 @@ public class SynologyAPIHelper {
 
     public SynologyAPI getSynologyApi(Context context) {
 
-        SharedPreferences prefs = context.getSharedPreferences(
-                context.getString(R.string.pref_key_shared_file), Context.MODE_PRIVATE);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String server = prefs.getString(context.getString(R.string.pref_key_server), "");
 
         if (!server.endsWith("/")) {

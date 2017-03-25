@@ -1,13 +1,12 @@
 package net.imatruck.dsmanager.tasks;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.AuthLoginBase;
 import net.imatruck.dsmanager.models.AuthLogoutBase;
 
 import java.io.IOException;
@@ -47,10 +46,10 @@ public class AuthLogoutTask extends AsyncTask<Call<AuthLogoutBase>, Void, AuthLo
             boolean success = logoutInfo.isSuccess();
 
             if (success) {
-                SharedPreferences prefs = context.getSharedPreferences(
-                        context.getString(R.string.pref_key_shared_file), Context.MODE_PRIVATE);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(context.getString(R.string.pref_key_sid), "");
+                editor.putString(context.getString(R.string.pref_key_sid_header), "");
                 editor.apply();
 
                 TextView debug_text_view_sid = (TextView) context.findViewById(R.id.debug_api_sid);

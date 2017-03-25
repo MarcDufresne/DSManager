@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.APIInfoData;
 import net.imatruck.dsmanager.models.APIInfoBase;
+import net.imatruck.dsmanager.models.APIInfoData;
 
 import java.io.IOException;
 import java.util.Map;
