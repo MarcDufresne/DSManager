@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">DS Manager</string>
+    <string name="action_settings">Settings</string>
+    <string name="debug_api_button">Test</string>
+    <string-array name="debug_api_choices">
+        <item>API Info</item>
+        <item>Auth Login</item>
+        <item>Auth Logout</item>
+        <item>DS Get Info</item>
+        <item>DS Get Config</item>
+        <item>DS Set Config</item>
+        <item>DS Task List</item>
+        <item>DS Task Get Info</item>
+        <item>DS Task Create URI</item>
+        <item>DS Task Create File</item>
+        <item>DS Task Delete</item>
+        <item>DS Task Pause</item>
+        <item>DS Task Resume</item>
+        <item>DS Task Edit</item>
+        <item>DS Stats Info</item>
+    </string-array>
+
+    <string name="pref_key_shared_file">dsmanager_shared_prefs</string>
+    <string name="pref_key_account">pref_account</string>
+    <string name="pref_key_password">pref_password</string>
+    <string name="pref_key_server">pref_server</string>
+    <string name="pref_key_sid">pref_sid</string>
+</resources>
