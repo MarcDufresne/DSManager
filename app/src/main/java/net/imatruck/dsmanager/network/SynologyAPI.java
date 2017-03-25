@@ -3,6 +3,7 @@ package net.imatruck.dsmanager.network;
 import net.imatruck.dsmanager.models.APIInfoBase;
 import net.imatruck.dsmanager.models.AuthLoginBase;
 import net.imatruck.dsmanager.models.AuthLogoutBase;
+import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 
 import retrofit2.Call;
@@ -43,5 +44,11 @@ public interface SynologyAPI {
             "version=2&" +
             "method=getinfo")
     Call<DSGetInfoBase> dsGetInfo(@Header("Cookie") String sid);
+
+    @GET("DownloadStation/info.cgi?" +
+            "api=SYNO.DownloadStation.Info&" +
+            "version=2&" +
+            "method=getconfig")
+    Call<DSGetConfigBase> dsGetConfig(@Header("Cookie") String sid);
 
 }
