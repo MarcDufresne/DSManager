@@ -5,6 +5,7 @@ import net.imatruck.dsmanager.models.AuthLoginBase;
 import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
+import net.imatruck.dsmanager.models.DSSetConfigBase;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -50,5 +51,20 @@ public interface SynologyAPI {
             "version=2&" +
             "method=getconfig")
     Call<DSGetConfigBase> dsGetConfig(@Header("Cookie") String sid);
+
+    @GET("DownloadStation/info.cgi?" +
+            "api=SYNO.DownloadStation.Info&" +
+            "version=2&" +
+            "method=setserverconfig")
+    Call<DSSetConfigBase> dsSetConfig(@Header("Cookie") String sid,
+        @Query("bt_max_download") Integer btMaxDownload,
+        @Query("bt_max_upload") Integer btMaxUpload,
+        @Query("default_destination") String defaultDestination,
+        @Query("emule_default_destination") String emuleDefaultDestination,
+        @Query("emule_max_download") Integer emuleMaxDownload,
+        @Query("emule_max_upload") Integer emuleMaxUpload,
+        @Query("ftp_max_download") Integer ftpMaxDownload,
+        @Query("http_max_download") Integer httpMaxDownload,
+        @Query("nzb_max_download") Integer nzbMaxDownload);
 
 }
