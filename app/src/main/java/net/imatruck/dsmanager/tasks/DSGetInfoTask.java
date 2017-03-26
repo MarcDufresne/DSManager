@@ -7,6 +7,7 @@ import android.widget.TextView;
 import net.imatruck.dsmanager.R;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSGetInfoData;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
 
 import java.io.IOException;
 
@@ -51,7 +52,8 @@ public class DSGetInfoTask extends AsyncTask<Call<DSGetInfoBase>, Void, DSGetInf
                 text += "\nVersion ID: " + infoData.getVersion();
                 debug_text_view.setText(text);
             } else {
-                String text = context.getString(dsInfo.getError().getMessageId());
+                String text = context.getString(
+                        SynologyBaseError.getMessageId(dsInfo.getError().getCode()));
                 debug_text_view.setText(text);
             }
         }

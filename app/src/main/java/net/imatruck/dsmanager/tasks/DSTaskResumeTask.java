@@ -5,9 +5,10 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.DSTaskDeleteBase;
-import net.imatruck.dsmanager.models.DSTaskDeleteData;
-import net.imatruck.dsmanager.utils.SynologyBaseError;
+import net.imatruck.dsmanager.models.DSTaskPauseBase;
+import net.imatruck.dsmanager.models.DSTaskPauseData;
+import net.imatruck.dsmanager.models.DSTaskResumeBase;
+import net.imatruck.dsmanager.models.DSTaskResumeData;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 
 import java.io.IOException;
@@ -20,45 +21,45 @@ import retrofit2.Call;
  * Created by marc on 2017-03-24.
  */
 
-public class DSTaskDeleteTask extends AsyncTask<Call<DSTaskDeleteBase>, Void, DSTaskDeleteBase> {
+public class DSTaskResumeTask extends AsyncTask<Call<DSTaskResumeBase>, Void, DSTaskResumeBase> {
 
     private Activity context;
 
-    public DSTaskDeleteTask(Activity context) {
+    public DSTaskResumeTask(Activity context) {
         this.context = context;
     }
 
     @SafeVarargs
     @Override
-    protected final DSTaskDeleteBase doInBackground(Call<DSTaskDeleteBase>... calls) {
+    protected final DSTaskResumeBase doInBackground(Call<DSTaskResumeBase>... calls) {
 
-        DSTaskDeleteBase dsTaskDeleteBase;
+        DSTaskResumeBase dsTaskResumeBase;
         try {
-            dsTaskDeleteBase = calls[0].execute().body();
+            dsTaskResumeBase = calls[0].execute().body();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
 
-        return dsTaskDeleteBase;
+        return dsTaskResumeBase;
     }
 
     @Override
-    protected void onPostExecute(DSTaskDeleteBase dsInfo) {
+    protected void onPostExecute(DSTaskResumeBase dsInfo) {
         if (dsInfo != null) {
             boolean success = dsInfo.isSuccess();
             TextView debugTextView = (TextView) context.findViewById(R.id.debug_api_text);
 
             if (success) {
-                List<DSTaskDeleteData> infoData = dsInfo.getData();
+                List<DSTaskResumeData> data = dsInfo.getData();
                 String text = "";
 
-                for (DSTaskDeleteData dsTaskDeleteData : infoData) {
+                for (DSTaskResumeData dsTaskResumeData : data) {
                     text += String.format(Locale.getDefault(),
                             "%s: %s\n",
-                            dsTaskDeleteData.getId(),
+                            dsTaskResumeData.getId(),
                             context.getString(
-                                    SynologyDSTaskError.getMessageId(dsTaskDeleteData.getError()))
+                                    SynologyDSTaskError.getMessageId(dsTaskResumeData.getError()))
                     );
                 }
                 debugTextView.setText(text);

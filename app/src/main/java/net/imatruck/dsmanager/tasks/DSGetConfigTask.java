@@ -9,6 +9,7 @@ import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetConfigData;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSGetInfoData;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
 
 import java.io.IOException;
 
@@ -54,7 +55,8 @@ public class DSGetConfigTask extends AsyncTask<Call<DSGetConfigBase>, Void, DSGe
                 text += "\nDefault Dest: " + infoData.getDefaultDestination();
                 debug_text_view.setText(text);
             } else {
-                String text = context.getString(dsInfo.getError().getMessageId());
+                String text = context.getString(
+                        SynologyBaseError.getMessageId(dsInfo.getError().getCode()));
                 debug_text_view.setText(text);
             }
         }

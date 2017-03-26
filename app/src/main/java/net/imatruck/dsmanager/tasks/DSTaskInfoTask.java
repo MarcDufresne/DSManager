@@ -10,6 +10,7 @@ import net.imatruck.dsmanager.models.DSTaskInfoData;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.utils.BytesFormatter;
 import net.imatruck.dsmanager.utils.PercentFormatter;
+import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 import net.imatruck.dsmanager.utils.TimestampFormatter;
 
 import java.io.IOException;
@@ -72,7 +73,8 @@ public class DSTaskInfoTask extends AsyncTask<Call<DSTaskInfoBase>, Void, DSTask
                 }
                 debug_text_view.setText(text);
             } else {
-                String text = context.getString(dsInfo.getError().getMessageId());
+                String text = context.getString(
+                        SynologyDSTaskError.getMessageId(dsInfo.getError().getCode()));
                 debug_text_view.setText(text);
             }
         }

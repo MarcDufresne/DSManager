@@ -27,8 +27,11 @@ import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
 import net.imatruck.dsmanager.tasks.DSTaskCreateTask;
 import net.imatruck.dsmanager.tasks.DSTaskDeleteTask;
+import net.imatruck.dsmanager.tasks.DSTaskEditTask;
 import net.imatruck.dsmanager.tasks.DSTaskInfoTask;
 import net.imatruck.dsmanager.tasks.DSTaskListTask;
+import net.imatruck.dsmanager.tasks.DSTaskPauseTask;
+import net.imatruck.dsmanager.tasks.DSTaskResumeTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,8 +134,17 @@ public class TaskList extends AppCompatActivity {
                                 sidHeader, editTextValue));
                         break;
                     case 11: // DS Task Pause
+                        new DSTaskPauseTask(TaskList.this).execute(synologyApi.dsTaskPause(
+                                sidHeader, editTextValue));
+                        break;
                     case 12: // DS Task Resume
+                        new DSTaskResumeTask(TaskList.this).execute(synologyApi.dsTaskResume(
+                                sidHeader, editTextValue));
+                        break;
                     case 13: // DS Task Edit
+                        new DSTaskEditTask(TaskList.this).execute(synologyApi.dsTaskEdit(
+                                sidHeader, editTextValue, "Downloads"));
+                        break;
                     case 14: // DS Stats Info
                     default:
                         break;

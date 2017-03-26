@@ -8,6 +8,7 @@ import net.imatruck.dsmanager.R;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSGetInfoData;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
 
 import java.io.IOException;
 
@@ -50,7 +51,8 @@ public class DSSetConfigTask extends AsyncTask<Call<DSSetConfigBase>, Void, DSSe
                 String text = "Set Config: Success";
                 debug_text_view.setText(text);
             } else {
-                String text = context.getString(dsInfo.getError().getMessageId());
+                String text = context.getString(
+                        SynologyBaseError.getMessageId(dsInfo.getError().getCode()));
                 debug_text_view.setText(text);
             }
         }

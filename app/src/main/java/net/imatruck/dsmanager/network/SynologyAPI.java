@@ -8,8 +8,11 @@ import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
 import net.imatruck.dsmanager.models.DSTaskCreateBase;
 import net.imatruck.dsmanager.models.DSTaskDeleteBase;
+import net.imatruck.dsmanager.models.DSTaskEditBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
+import net.imatruck.dsmanager.models.DSTaskPauseBase;
+import net.imatruck.dsmanager.models.DSTaskResumeBase;
 import net.imatruck.dsmanager.models.RequestDSTaskCreate;
 
 import java.util.Map;
@@ -104,4 +107,25 @@ public interface SynologyAPI {
     Call<DSTaskDeleteBase> dsTaskDelete(@Header("Cookie") String sid,
         @Query("id") String id);
 
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=pause")
+    Call<DSTaskPauseBase> dsTaskPause(@Header("Cookie") String sid,
+        @Query("id") String id);
+
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=resume")
+    Call<DSTaskResumeBase> dsTaskResume(@Header("Cookie") String sid,
+        @Query("id") String id);
+
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=edit")
+    Call<DSTaskEditBase> dsTaskEdit(@Header("Cookie") String sid,
+        @Query("id") String id,
+        @Query("destination") String destination);
 }

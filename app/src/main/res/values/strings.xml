@@ -27,6 +27,7 @@
     <string name="pref_key_sid">pref_sid</string>
     <string name="pref_key_sid_header">pref_sid_header</string>
 
+    <string name="synapi_error_0">No error</string>
     <string name="synapi_error_100">Unknown error</string>
     <string name="synapi_error_101">Invalid parameter</string>
     <string name="synapi_error_102">Requested API does not exist</string>
@@ -35,6 +36,16 @@
     <string name="synapi_error_105">Logged-in session does not have permission</string>
     <string name="synapi_error_106">Session timeout</string>
     <string name="synapi_error_107">Duplicate login</string>
+    <string name="synapi_dstask_error_400">File upload failed</string>
+    <string name="synapi_dstask_error_401">Max number of tasks reached</string>
+    <string name="synapi_dstask_error_402">Destination denied</string>
+    <string name="synapi_dstask_error_403">Destination does not exist</string>
+    <string name="synapi_dstask_error_404">Invalid task ID</string>
+    <string name="synapi_dstask_error_405">Invalid task action</string>
+    <string name="synapi_dstask_error_406">No default destination</string>
+    <string name="synapi_dstask_error_407">Set destination failed</string>
+    <string name="synapi_dstask_error_408">File does not exist</string>
+    <string name="synapi_dstask_error_544">Task not found</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->

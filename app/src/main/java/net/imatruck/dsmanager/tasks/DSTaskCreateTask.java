@@ -7,6 +7,8 @@ import android.widget.TextView;
 import net.imatruck.dsmanager.R;
 import net.imatruck.dsmanager.models.DSTaskCreateBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
+import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 
 import java.io.IOException;
 
@@ -49,7 +51,8 @@ public class DSTaskCreateTask extends AsyncTask<Call<DSTaskCreateBase>, Void, DS
                 String text = "Task Create: Success";
                 debugTextView.setText(text);
             } else {
-                String text = context.getString(dsInfo.getError().getMessageId());
+                String text = context.getString(
+                        SynologyDSTaskError.getMessageId(dsInfo.getError().getCode()));
                 debugTextView.setText(text);
             }
         }

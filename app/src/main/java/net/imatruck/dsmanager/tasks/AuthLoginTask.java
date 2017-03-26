@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
 import net.imatruck.dsmanager.models.AuthLoginBase;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
 
 import java.io.IOException;
 
@@ -46,7 +47,8 @@ public class AuthLoginTask extends AsyncTask<Call<AuthLoginBase>, Void, AuthLogi
             boolean success = loginInfo.isSuccess();
             String error_message = "";
             if (loginInfo.getError() != null) {
-                error_message = context.getString(loginInfo.getError().getMessageId());
+                error_message = context.getString(
+                        SynologyBaseError.getMessageId(loginInfo.getError().getCode()));
             }
 
             TextView debug_text_view = (TextView) context.findViewById(R.id.debug_api_text);
