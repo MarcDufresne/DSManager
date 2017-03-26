@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import net.imatruck.dsmanager.tasks.DSGetConfigTask;
 import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
 import net.imatruck.dsmanager.tasks.DSTaskCreateTask;
+import net.imatruck.dsmanager.tasks.DSTaskDeleteTask;
 import net.imatruck.dsmanager.tasks.DSTaskInfoTask;
 import net.imatruck.dsmanager.tasks.DSTaskListTask;
 
@@ -33,13 +35,15 @@ import butterknife.ButterKnife;
 
 public class TaskList extends AppCompatActivity {
     @BindView(R.id.debug_api_button)
-    Button debug_button;
+    Button debugButton;
     @BindView(R.id.debug_api_spinner)
-    Spinner debug_spinner;
+    Spinner debugSpinner;
+    @BindView(R.id.debug_edittext)
+    EditText debugEditText;
     @BindView(R.id.debug_api_text)
-    TextView debug_text;
+    TextView debugText;
     @BindView(R.id.debug_api_sid)
-    TextView debug_text_sid;
+    TextView debugTextSid;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -65,7 +69,7 @@ public class TaskList extends AppCompatActivity {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String sid = prefs.getString(getString(R.string.pref_key_sid), "");
-        debug_text_sid.setText(sid);
+        debugTextSid.setText(sid);
 
         SynologyAPIHelper helper = new SynologyAPIHelper();
         synologyApi = helper.getSynologyApi(this);
@@ -78,15 +82,17 @@ public class TaskList extends AppCompatActivity {
             }
         });
 
-        debug_button.setOnClickListener(new View.OnClickListener() {
+        debugButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
                         getApplicationContext());
                 String sid = prefs.getString(getString(R.string.pref_key_sid), "");
-                String sid_header = prefs.getString(getString(R.string.pref_key_sid_header), "");
+                String sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), "");
 
-                switch (debug_spinner.getSelectedItemPosition()) {
+                String editTextValue = debugEditText.getText().toString();
+
+                switch (debugSpinner.getSelectedItemPosition()) {
                     case 0: // API Info
                         new ApiInfoTask(TaskList.this).execute(synologyApi.apiGetInfo());
                         break;
@@ -99,31 +105,31 @@ public class TaskList extends AppCompatActivity {
                         new AuthLogoutTask(TaskList.this).execute(synologyApi.authLogout(sid));
                         break;
                     case 3: //  DS Get Info
-                        new DSGetInfoTask(TaskList.this).execute(synologyApi.dsGetInfo(sid_header));
+                        new DSGetInfoTask(TaskList.this).execute(synologyApi.dsGetInfo(sidHeader));
                         break;
                     case 4: //  DS Get Config
-                        new DSGetConfigTask(TaskList.this).execute(synologyApi.dsGetConfig(sid_header));
+                        new DSGetConfigTask(TaskList.this).execute(synologyApi.dsGetConfig(sidHeader));
                         break;
                     case 5: //  DS Set Config
                         new DSSetConfigTask(TaskList.this).execute(synologyApi.dsSetConfig(
-                                sid_header, 0, 0, null, null, null, null, null, null, null));
+                                sidHeader, 0, 0, null, null, null, null, null, null, null));
                         break;
                     case 6: //  DS Task List
-                        new DSTaskListTask(TaskList.this).execute(synologyApi.dsTaskList(sid_header));
+                        new DSTaskListTask(TaskList.this).execute(synologyApi.dsTaskList(sidHeader));
                         break;
                     case 7: //  DS Task Get Info
-                        new DSTaskInfoTask(TaskList.this).execute(synologyApi.dsTaskInfo(sid_header, "dbid_12"));
+                        new DSTaskInfoTask(TaskList.this).execute(synologyApi.dsTaskInfo(sidHeader, editTextValue));
                         break;
                     case 8: //  DS Task Create URI
                         new DSTaskCreateTask(TaskList.this).execute(synologyApi.dsTaskCreate(
-                                RequestDSTaskCreate.getCreateWithURIMap(
-                                        sid,
-                                        "https://github.com/python-babel/babel/archive/v2.4.0.tar.gz"))
-                        );
+                                RequestDSTaskCreate.getCreateWithURIMap(sid, editTextValue)));
                         break;
                     case 9: // DS Task Create File
                         break;
                     case 10: // DS Task Delete
+                        new DSTaskDeleteTask(TaskList.this).execute(synologyApi.dsTaskDelete(
+                                sidHeader, editTextValue));
+                        break;
                     case 11: // DS Task Pause
                     case 12: // DS Task Resume
                     case 13: // DS Task Edit

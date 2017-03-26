@@ -7,6 +7,7 @@ import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
 import net.imatruck.dsmanager.models.DSTaskCreateBase;
+import net.imatruck.dsmanager.models.DSTaskDeleteBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.RequestDSTaskCreate;
@@ -95,5 +96,12 @@ public interface SynologyAPI {
     @FormUrlEncoded
     @POST("DownloadStation/task.cgi")
     Call<DSTaskCreateBase> dsTaskCreate(@FieldMap Map<String, String> fields);
+
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=delete")
+    Call<DSTaskDeleteBase> dsTaskDelete(@Header("Cookie") String sid,
+        @Query("id") String id);
 
 }
