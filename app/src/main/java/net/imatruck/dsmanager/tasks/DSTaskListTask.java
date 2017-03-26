@@ -55,13 +55,18 @@ public class DSTaskListTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTask
 
                 for (Task task : infoData.getTasks()) {
                     text += String.format(Locale.getDefault(),
-                            "%s: %s\n%.2f%%, %s\n\n",
+                            "%s: %s\n%.2f%%, %s - Down: %s - Up: %s\n\n",
                             task.getId(),
                             task.getTitle(),
                             PercentFormatter.toPercent(
                                     task.getAdditional().getTransfer().getSizeDownloaded(),
                                     task.getSize()),
-                            BytesFormatter.humanReadable(task.getSize()));
+                            BytesFormatter.humanReadable(task.getSize(), false),
+                            BytesFormatter.humanReadable(
+                                    task.getAdditional().getTransfer().getSpeedDownload(), true),
+                            BytesFormatter.humanReadable(
+                                    task.getAdditional().getTransfer().getSpeedUpload(), true)
+                    );
                 }
                 debug_text_view.setText(text);
             } else {

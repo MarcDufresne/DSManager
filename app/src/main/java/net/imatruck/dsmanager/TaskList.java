@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import net.imatruck.dsmanager.models.RequestDSTaskCreate;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
 import net.imatruck.dsmanager.tasks.ApiInfoTask;
@@ -23,6 +24,7 @@ import net.imatruck.dsmanager.tasks.AuthLogoutTask;
 import net.imatruck.dsmanager.tasks.DSGetConfigTask;
 import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
+import net.imatruck.dsmanager.tasks.DSTaskCreateTask;
 import net.imatruck.dsmanager.tasks.DSTaskInfoTask;
 import net.imatruck.dsmanager.tasks.DSTaskListTask;
 
@@ -113,7 +115,14 @@ public class TaskList extends AppCompatActivity {
                         new DSTaskInfoTask(TaskList.this).execute(synologyApi.dsTaskInfo(sid_header, "dbid_12"));
                         break;
                     case 8: //  DS Task Create URI
+                        new DSTaskCreateTask(TaskList.this).execute(synologyApi.dsTaskCreate(
+                                RequestDSTaskCreate.getCreateWithURIMap(
+                                        sid,
+                                        "https://github.com/python-babel/babel/archive/v2.4.0.tar.gz"))
+                        );
+                        break;
                     case 9: // DS Task Create File
+                        break;
                     case 10: // DS Task Delete
                     case 11: // DS Task Pause
                     case 12: // DS Task Resume

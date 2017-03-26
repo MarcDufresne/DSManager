@@ -6,12 +6,20 @@ import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
+import net.imatruck.dsmanager.models.DSTaskCreateBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
+import net.imatruck.dsmanager.models.RequestDSTaskCreate;
+
+import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 /**
@@ -83,5 +91,9 @@ public interface SynologyAPI {
             "additional=detail,file,tracker,transfer")
     Call<DSTaskInfoBase> dsTaskInfo(@Header("Cookie") String sid,
         @Query("id") String id);
+
+    @FormUrlEncoded
+    @POST("DownloadStation/task.cgi")
+    Call<DSTaskCreateBase> dsTaskCreate(@FieldMap Map<String, String> fields);
 
 }

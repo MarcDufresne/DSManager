@@ -62,7 +62,7 @@ public class DSTaskInfoTask extends AsyncTask<Call<DSTaskInfoBase>, Void, DSTask
                             PercentFormatter.toPercent(
                                     task.getAdditional().getTransfer().getSizeDownloaded(),
                                     task.getSize()),
-                            BytesFormatter.humanReadable(task.getSize()),
+                            BytesFormatter.humanReadable(task.getSize(), false),
                             task.getAdditional().getDetail().getDestination(),
                             TimestampFormatter.timestampToDatetime(
                                     task.getAdditional().getDetail().getCompletedTime()),
