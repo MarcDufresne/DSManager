@@ -9,6 +9,7 @@ import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.DSTaskListData;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.utils.BytesFormatter;
+import net.imatruck.dsmanager.utils.EtaFormatter;
 import net.imatruck.dsmanager.utils.PercentFormatter;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 
@@ -56,7 +57,7 @@ public class DSTaskListTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTask
 
                 for (Task task : infoData.getTasks()) {
                     text += String.format(Locale.getDefault(),
-                            "%s: %s\n%.2f%%, %s - Down: %s - Up: %s\n\n",
+                            "%s: %s\n%.2f%%, %s - Down: %s - Up: %s - ETA: %s\n\n",
                             task.getId(),
                             task.getTitle(),
                             PercentFormatter.toPercent(
@@ -66,7 +67,11 @@ public class DSTaskListTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTask
                             BytesFormatter.humanReadable(
                                     task.getAdditional().getTransfer().getSpeedDownload(), true),
                             BytesFormatter.humanReadable(
-                                    task.getAdditional().getTransfer().getSpeedUpload(), true)
+                                    task.getAdditional().getTransfer().getSpeedUpload(), true),
+                            EtaFormatter.calculateEta(
+                                    task.getAdditional().getTransfer().getSizeDownloaded(),
+                                    task.getSize(),
+                                    task.getAdditional().getTransfer().getSpeedDownload())
                     );
                 }
                 debug_text_view.setText(text);
