@@ -6,7 +6,7 @@ import java.util.Locale;
  * Created by marc on 2017-03-25.
  */
 
-public class BytesFormater {
+public class BytesFormatter {
 
     public static String humanReadable(double bytes) {
         int unit = 1024;

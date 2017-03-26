@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class TaskAdditionalDetail {
 
     @SerializedName("completed_time")
-    private double completedTime;
+    private long completedTime;
 
     @SerializedName("connected_leechers")
     private int connectedLeechers;
@@ -21,7 +21,7 @@ public class TaskAdditionalDetail {
     private int connectedSeeders;
 
     @SerializedName("create_time")
-    private double createTime;
+    private long createTime;
 
     private String destination;
 
@@ -45,7 +45,7 @@ public class TaskAdditionalDetail {
     @SerializedName("waiting_seconds")
     private int waitingSeconds;
 
-    public double getCompletedTime() {
+    public long getCompletedTime() {
         return completedTime;
     }
 
@@ -61,7 +61,7 @@ public class TaskAdditionalDetail {
         return connectedSeeders;
     }
 
-    public double getCreateTime() {
+    public long getCreateTime() {
         return createTime;
     }
 

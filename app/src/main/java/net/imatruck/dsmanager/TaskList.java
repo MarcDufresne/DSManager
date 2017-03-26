@@ -23,6 +23,7 @@ import net.imatruck.dsmanager.tasks.AuthLogoutTask;
 import net.imatruck.dsmanager.tasks.DSGetConfigTask;
 import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
+import net.imatruck.dsmanager.tasks.DSTaskInfoTask;
 import net.imatruck.dsmanager.tasks.DSTaskListTask;
 
 import butterknife.BindView;
@@ -109,6 +110,8 @@ public class TaskList extends AppCompatActivity {
                         new DSTaskListTask(TaskList.this).execute(synologyApi.dsTaskList(sid_header));
                         break;
                     case 7: //  DS Task Get Info
+                        new DSTaskInfoTask(TaskList.this).execute(synologyApi.dsTaskInfo(sid_header, "dbid_12"));
+                        break;
                     case 8: //  DS Task Create URI
                     case 9: // DS Task Create File
                     case 10: // DS Task Delete

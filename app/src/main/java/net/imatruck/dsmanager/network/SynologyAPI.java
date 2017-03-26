@@ -6,6 +6,7 @@ import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
+import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 
 import retrofit2.Call;
@@ -74,5 +75,13 @@ public interface SynologyAPI {
             "method=list&" +
             "additional=transfer")
     Call<DSTaskListBase> dsTaskList(@Header("Cookie") String sid);
+
+    @GET("DownloadStation/task.cgi?" +
+            "api=SYNO.DownloadStation.Task&" +
+            "version=2&" +
+            "method=getinfo&" +
+            "additional=detail,file,tracker,transfer")
+    Call<DSTaskInfoBase> dsTaskInfo(@Header("Cookie") String sid,
+        @Query("id") String id);
 
 }

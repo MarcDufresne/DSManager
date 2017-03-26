@@ -5,11 +5,12 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.DSTaskListBase;
-import net.imatruck.dsmanager.models.DSTaskListData;
+import net.imatruck.dsmanager.models.DSTaskInfoBase;
+import net.imatruck.dsmanager.models.DSTaskInfoData;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.utils.BytesFormatter;
 import net.imatruck.dsmanager.utils.PercentFormatter;
+import net.imatruck.dsmanager.utils.TimestampFormatter;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -20,19 +21,19 @@ import retrofit2.Call;
  * Created by marc on 2017-03-24.
  */
 
-public class DSTaskListTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
+public class DSTaskInfoTask extends AsyncTask<Call<DSTaskInfoBase>, Void, DSTaskInfoBase> {
 
     private Activity context;
 
-    public DSTaskListTask(Activity context) {
+    public DSTaskInfoTask(Activity context) {
         this.context = context;
     }
 
     @SafeVarargs
     @Override
-    protected final DSTaskListBase doInBackground(Call<DSTaskListBase>... calls) {
+    protected final DSTaskInfoBase doInBackground(Call<DSTaskInfoBase>... calls) {
 
-        DSTaskListBase dsTaskListBase;
+        DSTaskInfoBase dsTaskListBase;
         try {
             dsTaskListBase = calls[0].execute().body();
         } catch (IOException e) {
@@ -44,24 +45,30 @@ public class DSTaskListTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTask
     }
 
     @Override
-    protected void onPostExecute(DSTaskListBase dsInfo) {
+    protected void onPostExecute(DSTaskInfoBase dsInfo) {
         if (dsInfo != null) {
             boolean success = dsInfo.isSuccess();
             TextView debug_text_view = (TextView) context.findViewById(R.id.debug_api_text);
 
             if (success) {
-                DSTaskListData infoData = dsInfo.getData();
+                DSTaskInfoData infoData = dsInfo.getData();
                 String text = "";
 
                 for (Task task : infoData.getTasks()) {
                     text += String.format(Locale.getDefault(),
-                            "%s: %s\n%.2f%%, %s\n\n",
+                            "%s: %s\n%.2f%%, %s\n%s\n%s\n%s\n\n",
                             task.getId(),
                             task.getTitle(),
                             PercentFormatter.toPercent(
                                     task.getAdditional().getTransfer().getSizeDownloaded(),
                                     task.getSize()),
-                            BytesFormatter.humanReadable(task.getSize()));
+                            BytesFormatter.humanReadable(task.getSize()),
+                            task.getAdditional().getDetail().getDestination(),
+                            TimestampFormatter.timestampToDatetime(
+                                    task.getAdditional().getDetail().getCompletedTime()),
+                            TimestampFormatter.timestampToDatetime(
+                                    task.getAdditional().getDetail().getCreateTime() * 1000
+                            ));
                 }
                 debug_text_view.setText(text);
             } else {
