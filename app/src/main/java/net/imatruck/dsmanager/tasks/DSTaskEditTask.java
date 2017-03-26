@@ -1,13 +1,10 @@
 package net.imatruck.dsmanager.tasks;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSTaskEditBase;
 
 import java.io.IOException;

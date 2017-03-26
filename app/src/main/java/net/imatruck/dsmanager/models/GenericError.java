@@ -1,7 +1,5 @@
 package net.imatruck.dsmanager.models;
 
-import net.imatruck.dsmanager.R;
-
 /**
  * Created by marc on 2017-03-25.
  */

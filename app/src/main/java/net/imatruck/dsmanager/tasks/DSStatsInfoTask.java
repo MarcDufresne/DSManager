@@ -5,15 +5,12 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.APIInfoBase;
-import net.imatruck.dsmanager.models.APIInfoData;
 import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.utils.BytesFormatter;
 import net.imatruck.dsmanager.utils.SynologyBaseError;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Map;
 
 import retrofit2.Call;
 

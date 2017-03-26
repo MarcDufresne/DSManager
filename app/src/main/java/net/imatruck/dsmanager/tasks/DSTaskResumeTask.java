@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.DSTaskPauseBase;
-import net.imatruck.dsmanager.models.DSTaskPauseData;
 import net.imatruck.dsmanager.models.DSTaskResumeBase;
 import net.imatruck.dsmanager.models.DSTaskResumeData;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;

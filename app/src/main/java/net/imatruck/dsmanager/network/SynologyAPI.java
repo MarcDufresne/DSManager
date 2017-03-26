@@ -14,12 +14,10 @@ import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.DSTaskPauseBase;
 import net.imatruck.dsmanager.models.DSTaskResumeBase;
-import net.imatruck.dsmanager.models.RequestDSTaskCreate;
 
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

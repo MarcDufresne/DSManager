@@ -37,7 +37,7 @@ import net.imatruck.dsmanager.tasks.DSTaskResumeTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TaskList extends AppCompatActivity {
+public class DebugActivity extends AppCompatActivity {
     @BindView(R.id.debug_api_button)
     Button debugButton;
     @BindView(R.id.debug_api_spinner)
@@ -58,16 +58,8 @@ public class TaskList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_list);
+        setContentView(R.layout.activity_debug);
         ButterKnife.bind(this);
-
-//        final SharedPreferences sharedPref = this.getSharedPreferences(
-//                getString(R.string.pref_key_shared_file), Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putString(getString(R.string.pref_key_account), "");
-//        editor.putString(getString(R.string.pref_key_password), "");
-//        editor.putString(getString(R.string.pref_key_server), "");
-//        editor.apply();
 
         setSupportActionBar(toolbar);
 
@@ -98,56 +90,56 @@ public class TaskList extends AppCompatActivity {
 
                 switch (debugSpinner.getSelectedItemPosition()) {
                     case 0: // API Info
-                        new ApiInfoTask(TaskList.this).execute(synologyApi.apiGetInfo());
+                        new ApiInfoTask(DebugActivity.this).execute(synologyApi.apiGetInfo());
                         break;
                     case 1: //  Auth Login
                         String account = prefs.getString(getString(R.string.pref_key_account), "");
                         String password = prefs.getString(getString(R.string.pref_key_password), "");
-                        new AuthLoginTask(TaskList.this).execute(synologyApi.authLogin(account, password));
+                        new AuthLoginTask(DebugActivity.this).execute(synologyApi.authLogin(account, password));
                         break;
                     case 2: //  Auth Logout
-                        new AuthLogoutTask(TaskList.this).execute(synologyApi.authLogout(sid));
+                        new AuthLogoutTask(DebugActivity.this).execute(synologyApi.authLogout(sid));
                         break;
                     case 3: //  DS Get Info
-                        new DSGetInfoTask(TaskList.this).execute(synologyApi.dsGetInfo(sidHeader));
+                        new DSGetInfoTask(DebugActivity.this).execute(synologyApi.dsGetInfo(sidHeader));
                         break;
                     case 4: //  DS Get Config
-                        new DSGetConfigTask(TaskList.this).execute(synologyApi.dsGetConfig(sidHeader));
+                        new DSGetConfigTask(DebugActivity.this).execute(synologyApi.dsGetConfig(sidHeader));
                         break;
                     case 5: //  DS Set Config
-                        new DSSetConfigTask(TaskList.this).execute(synologyApi.dsSetConfig(
+                        new DSSetConfigTask(DebugActivity.this).execute(synologyApi.dsSetConfig(
                                 sidHeader, 0, 0, null, null, null, null, null, null, null));
                         break;
                     case 6: //  DS Task List
-                        new DSTaskListTask(TaskList.this).execute(synologyApi.dsTaskList(sidHeader));
+                        new DSTaskListTask(DebugActivity.this).execute(synologyApi.dsTaskList(sidHeader));
                         break;
                     case 7: //  DS Task Get Info
-                        new DSTaskInfoTask(TaskList.this).execute(synologyApi.dsTaskInfo(sidHeader, editTextValue));
+                        new DSTaskInfoTask(DebugActivity.this).execute(synologyApi.dsTaskInfo(sidHeader, editTextValue));
                         break;
                     case 8: //  DS Task Create URI
-                        new DSTaskCreateTask(TaskList.this).execute(synologyApi.dsTaskCreate(
+                        new DSTaskCreateTask(DebugActivity.this).execute(synologyApi.dsTaskCreate(
                                 RequestDSTaskCreate.getCreateWithURIMap(sid, editTextValue)));
                         break;
                     case 9: // DS Task Create File
                         break;
                     case 10: // DS Task Delete
-                        new DSTaskDeleteTask(TaskList.this).execute(synologyApi.dsTaskDelete(
+                        new DSTaskDeleteTask(DebugActivity.this).execute(synologyApi.dsTaskDelete(
                                 sidHeader, editTextValue));
                         break;
                     case 11: // DS Task Pause
-                        new DSTaskPauseTask(TaskList.this).execute(synologyApi.dsTaskPause(
+                        new DSTaskPauseTask(DebugActivity.this).execute(synologyApi.dsTaskPause(
                                 sidHeader, editTextValue));
                         break;
                     case 12: // DS Task Resume
-                        new DSTaskResumeTask(TaskList.this).execute(synologyApi.dsTaskResume(
+                        new DSTaskResumeTask(DebugActivity.this).execute(synologyApi.dsTaskResume(
                                 sidHeader, editTextValue));
                         break;
                     case 13: // DS Task Edit
-                        new DSTaskEditTask(TaskList.this).execute(synologyApi.dsTaskEdit(
+                        new DSTaskEditTask(DebugActivity.this).execute(synologyApi.dsTaskEdit(
                                 sidHeader, editTextValue, "Downloads"));
                         break;
                     case 14: // DS Stats Info
-                        new DSStatsInfoTask(TaskList.this).execute(synologyApi.dsStatsInfo(sidHeader));
+                        new DSStatsInfoTask(DebugActivity.this).execute(synologyApi.dsStatsInfo(sidHeader));
                         break;
                     default:
                         break;
@@ -160,7 +152,7 @@ public class TaskList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        getMenuInflater().inflate(R.menu.menu_debug, menu);
         return true;
     }
 

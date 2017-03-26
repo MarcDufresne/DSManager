@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.R;
-import net.imatruck.dsmanager.models.DSGetInfoBase;
-import net.imatruck.dsmanager.models.DSGetInfoData;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
 import net.imatruck.dsmanager.utils.SynologyBaseError;
 

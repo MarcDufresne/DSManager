@@ -7,7 +7,6 @@ import android.widget.TextView;
 import net.imatruck.dsmanager.R;
 import net.imatruck.dsmanager.models.DSTaskDeleteBase;
 import net.imatruck.dsmanager.models.DSTaskDeleteData;
-import net.imatruck.dsmanager.utils.SynologyBaseError;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 
 import java.io.IOException;

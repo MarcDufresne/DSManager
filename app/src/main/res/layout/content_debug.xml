@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="net.imatruck.dsmanager.TaskList"
-    tools:showIn="@layout/activity_task_list">
+    tools:context="net.imatruck.dsmanager.DebugActivity"
+    tools:showIn="@layout/activity_debug">
 
     <Spinner
         android:id="@+id/debug_api_spinner"

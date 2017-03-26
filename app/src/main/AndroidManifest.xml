@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".TaskList"
+            android:name=".DebugActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,10 +24,10 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".TaskList">
+            android:parentActivityName=".DebugActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="net.imatruck.dsmanager.TaskList" />
+                android:value="net.imatruck.dsmanager.DebugActivity" />
         </activity>
     </application>
 
