@@ -25,6 +25,7 @@ import net.imatruck.dsmanager.tasks.AuthLogoutTask;
 import net.imatruck.dsmanager.tasks.DSGetConfigTask;
 import net.imatruck.dsmanager.tasks.DSGetInfoTask;
 import net.imatruck.dsmanager.tasks.DSSetConfigTask;
+import net.imatruck.dsmanager.tasks.DSStatsInfoTask;
 import net.imatruck.dsmanager.tasks.DSTaskCreateTask;
 import net.imatruck.dsmanager.tasks.DSTaskDeleteTask;
 import net.imatruck.dsmanager.tasks.DSTaskEditTask;
@@ -146,6 +147,8 @@ public class TaskList extends AppCompatActivity {
                                 sidHeader, editTextValue, "Downloads"));
                         break;
                     case 14: // DS Stats Info
+                        new DSStatsInfoTask(TaskList.this).execute(synologyApi.dsStatsInfo(sidHeader));
+                        break;
                     default:
                         break;
                 }

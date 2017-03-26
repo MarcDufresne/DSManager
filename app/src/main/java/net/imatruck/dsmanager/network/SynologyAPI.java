@@ -6,6 +6,7 @@ import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSGetConfigBase;
 import net.imatruck.dsmanager.models.DSGetInfoBase;
 import net.imatruck.dsmanager.models.DSSetConfigBase;
+import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.models.DSTaskCreateBase;
 import net.imatruck.dsmanager.models.DSTaskDeleteBase;
 import net.imatruck.dsmanager.models.DSTaskEditBase;
@@ -128,4 +129,10 @@ public interface SynologyAPI {
     Call<DSTaskEditBase> dsTaskEdit(@Header("Cookie") String sid,
         @Query("id") String id,
         @Query("destination") String destination);
+
+    @GET("DownloadStation/statistic.cgi?" +
+            "api=SYNO.DownloadStation.Statistic&" +
+            "version=1&" +
+            "method=getinfo")
+    Call<DSStatsInfoBase> dsStatsInfo(@Header("Cookie") String sid);
 }
