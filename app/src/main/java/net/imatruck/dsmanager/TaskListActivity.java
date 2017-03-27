@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-public class TaskListActivity extends AppCompatActivity {
+public class TaskListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @BindView(R.id.task_list_view)
     ListView taskListView;
@@ -71,6 +72,8 @@ public class TaskListActivity extends AppCompatActivity {
 
         adapter = new TasksArrayAdapter(this, new ArrayList<Task>());
         taskListView.setAdapter(adapter);
+
+        taskListView.setOnItemClickListener(this);
     }
 
     @Override
@@ -136,6 +139,14 @@ public class TaskListActivity extends AppCompatActivity {
 
     private void stopPeriodicRefresh() {
         mHandler.removeCallbacks(mTaskRefresher);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Task task = (Task) adapter.getItem(position);
+        if (task != null) {
+            Snackbar.make(fab, "Task ID: " + task.getId(), Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private class RefreshTasks extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
