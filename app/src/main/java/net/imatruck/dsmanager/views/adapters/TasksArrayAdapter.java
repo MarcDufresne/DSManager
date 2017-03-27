@@ -75,6 +75,7 @@ public class TasksArrayAdapter extends ArrayAdapter {
         Task task = tasks.get(position);
 
         if (task != null) {
+            // TODO: Add colors to progress bar depending on status
             String taskTitle = task.getTitle();
             int statusString = StatusFormatter.getStatusString(task.getStatus());
             String status = statusString != -1 ? context.getString(statusString) : task.getStatus();
