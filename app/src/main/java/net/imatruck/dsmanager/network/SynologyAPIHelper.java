@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SynologyAPIHelper {
 
-    public SynologyAPI getSynologyApi(Context context) {
+    public static SynologyAPI getSynologyApi(Context context) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String server = prefs.getString(context.getString(R.string.pref_key_server), "");
