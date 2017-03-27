@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#0277BD</color>
+    <color name="colorPrimaryDark">#01579B</color>
+    <color name="colorAccent">#C6FF00</color>
+
+    <color name="colorStatusWaiting">#FFC107</color>
+    <color name="colorStatusDone">#4CAF50</color>
+    <color name="colorStatusSeeding">#2196F3</color>
+    <color name="colorStatusPaused">#9E9E9E</color>
+    <color name="colorStatusError">#F44336</color>
 </resources>

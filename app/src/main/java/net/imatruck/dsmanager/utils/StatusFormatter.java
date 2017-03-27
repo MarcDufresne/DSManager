@@ -35,6 +35,34 @@ public class StatusFormatter {
                 return -1;
 
         }
+    }
+
+    public static int getStatusColor(String status) {
+
+        switch (status) {
+            case "waiting":
+                return R.color.colorStatusWaiting;
+            case "downloading":
+                return R.color.colorAccent;
+            case "paused":
+                return R.color.colorStatusPaused;
+            case "finishing":
+                return R.color.colorStatusDone;
+            case "finished":
+                return R.color.colorStatusDone;
+            case "hash_checking":
+                return R.color.colorStatusWaiting;
+            case "seeding":
+                return R.color.colorStatusSeeding;
+            case "filehosting_waiting":
+                return R.color.colorStatusWaiting;
+            case "extracting":
+                return R.color.colorStatusWaiting;
+            case "error":
+                return R.color.colorStatusError;
+            default:
+                return R.color.colorAccent;
+        }
 
     }
 

@@ -158,13 +158,15 @@ public class TaskListActivity extends AppCompatActivity {
         protected void onPostExecute(DSTaskListBase dsTaskListBase) {
             if (dsTaskListBase != null) {
                 if (dsTaskListBase.isSuccess()) {
+                    List<Task> tasks = dsTaskListBase.getData().getTasks();
+
                     int index = taskListView.getFirstVisiblePosition();
                     View v = taskListView.getChildAt(0);
                     int top = (v == null) ? 0 : (v.getTop() - taskListView.getPaddingTop());
 
-                    List<Task> tasks = dsTaskListBase.getData().getTasks();
                     adapter.clear();
                     adapter.addAll(tasks);
+
                     adapter.notifyDataSetChanged();
 
                     taskListView.setSelectionFromTop(index, top);

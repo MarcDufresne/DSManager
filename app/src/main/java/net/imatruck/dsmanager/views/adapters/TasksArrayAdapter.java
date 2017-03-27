@@ -1,9 +1,12 @@
 package net.imatruck.dsmanager.views.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,10 +78,11 @@ public class TasksArrayAdapter extends ArrayAdapter {
         Task task = tasks.get(position);
 
         if (task != null) {
-            // TODO: Add colors to progress bar depending on status
             String taskTitle = task.getTitle();
             int statusString = StatusFormatter.getStatusString(task.getStatus());
             String status = statusString != -1 ? context.getString(statusString) : task.getStatus();
+            int colorRes = StatusFormatter.getStatusColor(task.getStatus());
+            int color = ResourcesCompat.getColor(context.getResources(), colorRes, null);
             double size = task.getSize();
             double speedDownload = task.getAdditional().getTransfer().getSpeedDownload();
             double speedUpload = task.getAdditional().getTransfer().getSpeedUpload();
@@ -95,6 +99,7 @@ public class TasksArrayAdapter extends ArrayAdapter {
                             EtaFormatter.calculateEta(sizeDownloaded, size, speedDownload))
             );
             holder.progressBar.setProgress((int) percent);
+            holder.progressBar.setProgressTintList(ColorStateList.valueOf(color));
             holder.progressText.setText(String.format(Locale.getDefault(), "%.0f%%", percent));
         }
 
