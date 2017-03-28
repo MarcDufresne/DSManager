@@ -73,4 +73,16 @@
     <string name="pref_key_server">pref_server</string>
     <string name="pref_key_sid">pref_sid</string>
     <string name="pref_key_sid_header">pref_sid_header</string>
+
+    <string name="title_activity_task_info">TaskInfoActivity</string>
+    <string name="detail_general_header">General</string>
+    <string name="detail_destination_label">Destination:</string>
+    <string name="detail_download_label">Download:</string>
+    <string name="detail_size_label">Size:</string>
+    <string name="detail_tracker_header">Tracker</string>
+    <string name="detail_upload_label">Upload:</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_resume">Resume</string>
 </resources>

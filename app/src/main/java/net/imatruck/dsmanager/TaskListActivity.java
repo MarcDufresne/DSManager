@@ -145,7 +145,9 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Task task = (Task) adapter.getItem(position);
         if (task != null) {
-            Snackbar.make(fab, "Task ID: " + task.getId(), Snackbar.LENGTH_SHORT).show();
+            Intent taskDetailIntent = new Intent(this, TaskInfoActivity.class);
+            taskDetailIntent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, task.getId());
+            startActivity(taskDetailIntent);
         }
     }
 
