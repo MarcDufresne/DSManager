@@ -21,4 +21,12 @@ public class RequestDSTaskCreate {
         map.put("_sid", sid);
         return map;
     }
+
+    public static Map<String, String> getCreateWithUriDestinationMap(
+            String sid, String uri, String destination) {
+
+        Map<String, String> map = RequestDSTaskCreate.getCreateWithURIMap(sid, uri);
+        map.put("destination", destination);
+        return map;
+    }
 }

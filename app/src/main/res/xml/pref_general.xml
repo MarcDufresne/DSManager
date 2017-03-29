@@ -1,12 +1,4 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-
     <EditTextPreference
         android:inputType="textUri"
         android:key="@string/pref_key_server"
@@ -25,4 +17,10 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_title_password" />
+    <EditTextPreference
+        android:defaultValue="@string/pref_default_default_destination"
+        android:key="@string/pref_key_default_destination"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_title_default_destination" />
 </PreferenceScreen>

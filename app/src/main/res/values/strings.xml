@@ -85,4 +85,15 @@
     <string name="action_delete">Delete</string>
     <string name="action_pause">Pause</string>
     <string name="action_resume">Resume</string>
+
+    <string name="title_activity_add_task">Add a Task</string>
+    <string name="pref_key_default_destination">pref_default_destination</string>
+    <string name="pref_title_default_destination">Default Destination</string>
+    <string name="pref_default_default_destination">downloads</string>
+    <string name="action_add">Add</string>
+    <string name="add_radio_label_uri">URI</string>
+    <string name="add_label_type">Type</string>
+    <string name="add_edit_uri">URI</string>
+    <string name="add_edit_destination">Destination</string>
+    <string name="toast_task_created">New Task Created</string>
 </resources>

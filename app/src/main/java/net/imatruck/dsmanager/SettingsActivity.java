@@ -174,6 +174,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_server)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_account)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_password)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_default_destination)));
         }
 
         @Override

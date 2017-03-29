@@ -63,8 +63,8 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent addTaskIntent = new Intent(TaskListActivity.this, AddTaskActivity.class);
+                startActivity(addTaskIntent);
             }
         });
 
