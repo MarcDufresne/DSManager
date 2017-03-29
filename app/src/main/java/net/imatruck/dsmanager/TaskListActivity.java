@@ -109,6 +109,7 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
+            startPeriodicRefresh();
             new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
         }
 
@@ -191,6 +192,7 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
             } else {
                 String text = getString(R.string.synapi_error_1);
                 Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
+                stopPeriodicRefresh();
             }
         }
     }

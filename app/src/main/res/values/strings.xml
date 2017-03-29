@@ -29,7 +29,7 @@
     </string-array>
 
     <string name="synapi_error_0">No error</string>
-    <string name="synapi_error_1">Network error</string>
+    <string name="synapi_error_1">Network error, refresh to retry</string>
     <string name="synapi_error_100">Unknown error</string>
     <string name="synapi_error_101">Invalid parameter</string>
     <string name="synapi_error_102">Requested API does not exist</string>
