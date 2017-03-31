@@ -1,7 +1,16 @@
 package net.imatruck.dsmanager.models;
 
+import android.net.Uri;
+
+import net.imatruck.dsmanager.network.SynologyAPI;
+import net.imatruck.dsmanager.network.SynologyAPIHelper;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Retrofit;
 
 /**
  * Created by marc on 2017-03-25.
@@ -28,5 +37,26 @@ public class RequestDSTaskCreate {
         Map<String, String> map = RequestDSTaskCreate.getCreateWithURIMap(sid, uri);
         map.put("destination", destination);
         return map;
+    }
+
+    public static Map<String, RequestBody> getCreateWithFile() {
+
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("api", createPartFromString(api));
+        map.put("version", createPartFromString(String.valueOf(version)));
+        map.put("method", createPartFromString(method));
+        return map;
+    }
+
+    public static Map<String, RequestBody> getCreateWithFileDestination(String destination) {
+
+        Map<String, RequestBody> map = getCreateWithFile();
+        map.put("destination", createPartFromString(destination));
+        return map;
+    }
+
+    private static RequestBody createPartFromString(String string) {
+        return RequestBody.create(
+                MultipartBody.FORM, string);
     }
 }

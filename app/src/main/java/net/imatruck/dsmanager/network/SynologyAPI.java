@@ -17,12 +17,17 @@ import net.imatruck.dsmanager.models.DSTaskResumeBase;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 /**
@@ -97,7 +102,13 @@ public interface SynologyAPI {
 
     @FormUrlEncoded
     @POST("DownloadStation/task.cgi")
-    Call<DSTaskCreateBase> dsTaskCreate(@FieldMap Map<String, String> fields);
+    Call<DSTaskCreateBase> dsTaskCreateUri(@FieldMap Map<String, String> fields);
+
+    @Multipart
+    @POST("DownloadStation/task.cgi")
+    Call<DSTaskCreateBase> dsTaskCreateFile(@Header("cookie") String sid,
+                                            @PartMap() Map<String, RequestBody> parts,
+                                            @Part MultipartBody.Part file);
 
     @GET("DownloadStation/task.cgi?" +
             "api=SYNO.DownloadStation.Task&" +

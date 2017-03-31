@@ -1,6 +1,5 @@
 package net.imatruck.dsmanager;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -8,8 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,7 +113,7 @@ public class DebugActivity extends AppCompatActivity {
                         new DSTaskInfoTask(DebugActivity.this).execute(synologyApi.dsTaskInfo(sidHeader, editTextValue));
                         break;
                     case 8: //  DS Task Create URI
-                        new DSTaskCreateTask(DebugActivity.this).execute(synologyApi.dsTaskCreate(
+                        new DSTaskCreateTask(DebugActivity.this).execute(synologyApi.dsTaskCreateUri(
                                 RequestDSTaskCreate.getCreateWithURIMap(sid, editTextValue)));
                         break;
                     case 9: // DS Task Create File

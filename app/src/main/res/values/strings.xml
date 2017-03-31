@@ -96,4 +96,7 @@
     <string name="add_edit_uri">URI</string>
     <string name="add_edit_destination">Destination</string>
     <string name="toast_task_created">New Task Created</string>
+    <string name="add_radio_label_file">File</string>
+
+    <string name="internal_storage">Internal storage</string>
 </resources>

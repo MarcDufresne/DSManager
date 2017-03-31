@@ -135,6 +135,7 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
     };
 
     private void startPeriodicRefresh() {
+        stopPeriodicRefresh();
         mTaskRefresher.run();
     }
 
