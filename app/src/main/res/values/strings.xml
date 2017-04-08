@@ -104,4 +104,6 @@
     <string name="edit_task_dialog_confirm">Move</string>
     <string name="edit_task_dialog_cancel">Cancel</string>
     <string name="edit_task_success">Task moved successfully</string>
+    <string name="pause_task_success">Task paused successfully</string>
+    <string name="resume_task_success">Task resumed successfully</string>
 </resources>

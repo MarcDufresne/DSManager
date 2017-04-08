@@ -18,6 +18,9 @@ import android.widget.TextView;
 import net.imatruck.dsmanager.fragments.EditTaskDialog;
 import net.imatruck.dsmanager.models.DSTaskEditBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
+import net.imatruck.dsmanager.models.DSTaskPauseBase;
+import net.imatruck.dsmanager.models.DSTaskResumeBase;
+import net.imatruck.dsmanager.models.DSTaskResumeData;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.models.TaskAdditionalTransfer;
 import net.imatruck.dsmanager.network.SynologyAPI;
@@ -122,9 +125,9 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
             EditTaskDialog editTaskDialog = new EditTaskDialog();
             editTaskDialog.show(getSupportFragmentManager(), "edit_task_dialog");
         } else if (itemId == R.id.action_pause) {
-
+            new PauseTaskTask().execute(synologyAPI.dsTaskPause(sidHeader, taskId));
         } else if (itemId == R.id.action_resume) {
-
+            new ResumeTaskTask().execute(synologyAPI.dsTaskResume(sidHeader, taskId));
         } else if (itemId == R.id.action_delete) {
 
         }
@@ -271,6 +274,76 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
                 } else {
                     String text = getString(
                             SynologyDSTaskError.getMessageId(dsTaskEditBase.getError().getCode()));
+                    Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                }
+            } else {
+                String text = getString(R.string.synapi_error_1);
+                Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class PauseTaskTask extends AsyncTask<Call<DSTaskPauseBase>, Void, DSTaskPauseBase> {
+
+        @SafeVarargs
+        @Override
+        protected final DSTaskPauseBase doInBackground(Call<DSTaskPauseBase>... calls) {
+            DSTaskPauseBase dsTaskPauseBase;
+            try {
+                dsTaskPauseBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return dsTaskPauseBase;
+        }
+
+        @Override
+        protected void onPostExecute(DSTaskPauseBase dsTaskPauseBase) {
+            if (dsTaskPauseBase != null) {
+                if (dsTaskPauseBase.isSuccess()) {
+                    Snackbar.make(toolbar, R.string.pause_task_success,
+                            Snackbar.LENGTH_LONG).show();
+
+                } else {
+                    String text = getString(
+                            SynologyDSTaskError.getMessageId(dsTaskPauseBase.getError().getCode()));
+                    Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                }
+            } else {
+                String text = getString(R.string.synapi_error_1);
+                Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class ResumeTaskTask extends AsyncTask<Call<DSTaskResumeBase>, Void, DSTaskResumeBase> {
+
+        @SafeVarargs
+        @Override
+        protected final DSTaskResumeBase doInBackground(Call<DSTaskResumeBase>... calls) {
+            DSTaskResumeBase dsTaskResumeBase;
+            try {
+                dsTaskResumeBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return dsTaskResumeBase;
+        }
+
+        @Override
+        protected void onPostExecute(DSTaskResumeBase dsTaskResumeBase) {
+            if (dsTaskResumeBase != null) {
+                if (dsTaskResumeBase.isSuccess()) {
+                    Snackbar.make(toolbar, R.string.resume_task_success,
+                            Snackbar.LENGTH_LONG).show();
+
+                } else {
+                    String text = getString(
+                            SynologyDSTaskError.getMessageId(dsTaskResumeBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
