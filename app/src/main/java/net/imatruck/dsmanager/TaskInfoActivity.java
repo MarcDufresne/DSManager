@@ -6,19 +6,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.imatruck.dsmanager.fragments.EditTaskDialog;
+import net.imatruck.dsmanager.models.DSTaskEditBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
-import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.models.TaskAdditionalTransfer;
 import net.imatruck.dsmanager.network.SynologyAPI;
@@ -37,7 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-public class TaskInfoActivity extends AppCompatActivity {
+public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialog.EditTaskListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -120,7 +119,8 @@ public class TaskInfoActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.action_edit) {
-
+            EditTaskDialog editTaskDialog = new EditTaskDialog();
+            editTaskDialog.show(getSupportFragmentManager(), "edit_task_dialog");
         } else if (itemId == R.id.action_pause) {
 
         } else if (itemId == R.id.action_resume) {
@@ -195,10 +195,21 @@ public class TaskInfoActivity extends AppCompatActivity {
         detailDestinationText.setText(destination);
     }
 
+    @Override
+    public void onDialogConfirmMove(String newDestination) {
+        new EditTaskTask().execute(synologyAPI.dsTaskEdit(sidHeader, taskId, newDestination));
+    }
+
+    @Override
+    public void onDialogCancelMove() {
+        Snackbar.make(toolbar, "Canceled", Snackbar.LENGTH_LONG).show();
+    }
+
     private class GetTaskDetailTask extends AsyncTask<Call<DSTaskInfoBase>, Void, DSTaskInfoBase> {
 
+        @SafeVarargs
         @Override
-        protected DSTaskInfoBase doInBackground(Call<DSTaskInfoBase>... calls) {
+        protected final DSTaskInfoBase doInBackground(Call<DSTaskInfoBase>... calls) {
             DSTaskInfoBase dsTaskInfoBase;
             try {
                 dsTaskInfoBase = calls[0].execute().body();
@@ -225,6 +236,41 @@ public class TaskInfoActivity extends AppCompatActivity {
                 } else {
                     String text = getString(
                             SynologyDSTaskError.getMessageId(dsTaskInfoBase.getError().getCode()));
+                    Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                }
+            } else {
+                String text = getString(R.string.synapi_error_1);
+                Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class EditTaskTask extends AsyncTask<Call<DSTaskEditBase>, Void, DSTaskEditBase> {
+
+        @SafeVarargs
+        @Override
+        protected final DSTaskEditBase doInBackground(Call<DSTaskEditBase>... calls) {
+            DSTaskEditBase dsTaskEditBase;
+            try {
+                dsTaskEditBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return dsTaskEditBase;
+        }
+
+        @Override
+        protected void onPostExecute(DSTaskEditBase dsTaskEditBase) {
+            if (dsTaskEditBase != null) {
+                if (dsTaskEditBase.isSuccess()) {
+                    Snackbar.make(toolbar, R.string.edit_task_success,
+                                Snackbar.LENGTH_LONG).show();
+
+                } else {
+                    String text = getString(
+                            SynologyDSTaskError.getMessageId(dsTaskEditBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {

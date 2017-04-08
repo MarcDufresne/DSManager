@@ -99,4 +99,9 @@
     <string name="add_radio_label_file">File</string>
 
     <string name="internal_storage">Internal storage</string>
+    <string name="edit_task_dialog_title">Move Task</string>
+    <string name="edit_task_dialog_message">New Destination</string>
+    <string name="edit_task_dialog_confirm">Move</string>
+    <string name="edit_task_dialog_cancel">Cancel</string>
+    <string name="edit_task_success">Task moved successfully</string>
 </resources>
