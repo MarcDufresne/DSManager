@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.fragments.EditTaskDialog;
+import net.imatruck.dsmanager.models.DSTaskDeleteBase;
 import net.imatruck.dsmanager.models.DSTaskEditBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskPauseBase;
@@ -129,7 +130,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
         } else if (itemId == R.id.action_resume) {
             new ResumeTaskTask().execute(synologyAPI.dsTaskResume(sidHeader, taskId));
         } else if (itemId == R.id.action_delete) {
-
+            new DeleteTaskTask().execute(synologyAPI.dsTaskDelete(sidHeader, taskId));
         }
 
         return super.onOptionsItemSelected(item);
@@ -344,6 +345,39 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
                 } else {
                     String text = getString(
                             SynologyDSTaskError.getMessageId(dsTaskResumeBase.getError().getCode()));
+                    Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                }
+            } else {
+                String text = getString(R.string.synapi_error_1);
+                Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class DeleteTaskTask extends AsyncTask<Call<DSTaskDeleteBase>, Void, DSTaskDeleteBase> {
+
+        @SafeVarargs
+        @Override
+        protected final DSTaskDeleteBase doInBackground(Call<DSTaskDeleteBase>... calls) {
+            DSTaskDeleteBase dsTaskDeleteBase;
+            try {
+                dsTaskDeleteBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return dsTaskDeleteBase;
+        }
+
+        @Override
+        protected void onPostExecute(DSTaskDeleteBase dsTaskDeleteBase) {
+            if (dsTaskDeleteBase != null) {
+                if (dsTaskDeleteBase.isSuccess()) {
+                    finish();
+                } else {
+                    String text = getString(
+                            SynologyDSTaskError.getMessageId(dsTaskDeleteBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
