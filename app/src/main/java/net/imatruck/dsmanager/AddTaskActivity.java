@@ -155,6 +155,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        editInputUri.setText("");
         if (checkedId == R.id.radio_file) {
             int permissionCheck = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -165,7 +166,8 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
                         this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         PERMISSION_CHECK_REQUEST_CODE);
             }
-
+        } else if (checkedId == R.id.radio_uri) {
+            fileUri = null;
         }
     }
 
