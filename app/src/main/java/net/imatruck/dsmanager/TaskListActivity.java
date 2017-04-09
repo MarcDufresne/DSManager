@@ -17,10 +17,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import net.imatruck.dsmanager.models.AuthLoginBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
+import net.imatruck.dsmanager.utils.SynologyBaseError;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
 
@@ -85,10 +87,23 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
 
         synologyApi = SynologyAPIHelper.getSynologyApi(this);
 
-        new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
-
         mHandler = new Handler();
-        startPeriodicRefresh();
+
+        if (sidHeader == null) {
+            String account = prefs.getString(getString(R.string.pref_key_account), null);
+            String password = prefs.getString(getString(R.string.pref_key_password), null);
+
+            if (account == null || password == null) {
+                Snackbar.make(toolbar, "Missing credentials, see Settings",
+                        Snackbar.LENGTH_LONG).show();
+                stopPeriodicRefresh();
+            } else {
+                new LoginTask().execute(synologyApi.authLogin(account, password));
+            }
+        } else {
+            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
+            startPeriodicRefresh();
+        }
     }
 
     @Override
@@ -194,6 +209,48 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
                 String text = getString(R.string.synapi_error_1);
                 Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
                 stopPeriodicRefresh();
+            }
+        }
+    }
+
+    private class LoginTask extends AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase> {
+
+        @SafeVarargs
+        @Override
+        protected final AuthLoginBase doInBackground(Call<AuthLoginBase>... calls) {
+            AuthLoginBase authLoginBase;
+            try {
+                authLoginBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return authLoginBase;
+        }
+
+        @Override
+        protected void onPostExecute(AuthLoginBase authLoginBase) {
+            if (authLoginBase != null) {
+                if (authLoginBase.isSuccess()) {
+                    String loginSid = authLoginBase.getSid();
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+                            TaskListActivity.this);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(getString(R.string.pref_key_sid), loginSid);
+                    editor.putString(getString(R.string.pref_key_sid_header), "id=" + loginSid);
+                    editor.apply();
+
+                    Snackbar.make(toolbar, "Logged-in", Snackbar.LENGTH_SHORT).show();
+
+                    startPeriodicRefresh();
+                } else {
+                    String error = getString(SynologyBaseError.getMessageId(
+                            authLoginBase.getError().getCode()));
+                    Snackbar.make(toolbar, error, Snackbar.LENGTH_LONG);
+                    stopPeriodicRefresh();
+                }
             }
         }
     }
