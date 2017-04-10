@@ -89,11 +89,11 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
 
         mHandler = new Handler();
 
-        if (sidHeader == null) {
+        if (sidHeader == null || sidHeader.isEmpty()) {
             String account = prefs.getString(getString(R.string.pref_key_account), null);
             String password = prefs.getString(getString(R.string.pref_key_password), null);
 
-            if (account == null || password == null) {
+            if (account == null || password == null || account.isEmpty() || password.isEmpty()) {
                 Snackbar.make(toolbar, "Missing credentials, see Settings",
                         Snackbar.LENGTH_LONG).show();
                 stopPeriodicRefresh();
@@ -204,6 +204,7 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
                     String text = getString(
                             SynologyDSTaskError.getMessageId(dsTaskListBase.getError().getCode()));
                     Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
+                    stopPeriodicRefresh();
                 }
             } else {
                 String text = getString(R.string.synapi_error_1);

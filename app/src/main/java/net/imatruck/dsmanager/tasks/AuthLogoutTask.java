@@ -1,5 +1,6 @@
 package net.imatruck.dsmanager.tasks;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,6 +41,7 @@ public class AuthLogoutTask extends AsyncTask<Call<AuthLogoutBase>, Void, AuthLo
         return loginInfo;
     }
 
+    @SuppressLint("ApplySharedPref")
     @Override
     protected void onPostExecute(AuthLogoutBase logoutInfo) {
         if (logoutInfo != null) {
@@ -50,7 +52,7 @@ public class AuthLogoutTask extends AsyncTask<Call<AuthLogoutBase>, Void, AuthLo
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(context.getString(R.string.pref_key_sid), "");
                 editor.putString(context.getString(R.string.pref_key_sid_header), "");
-                editor.apply();
+                editor.commit();
 
                 TextView debug_text_view_sid = (TextView) context.findViewById(R.id.debug_api_sid);
                 debug_text_view_sid.setText("");
