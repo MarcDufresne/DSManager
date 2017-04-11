@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +26,7 @@ import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
 import net.imatruck.dsmanager.utils.SynologyBaseError;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
+import net.imatruck.dsmanager.views.adapters.TaskListOnClickListener;
 import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
 
 import java.io.IOException;
@@ -34,10 +37,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-public class TaskListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class TaskListActivity extends AppCompatActivity implements TaskListOnClickListener {
 
     @BindView(R.id.task_list_view)
-    ListView taskListView;
+    RecyclerView taskListView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.fab)
@@ -70,17 +73,18 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
             }
         });
 
-        taskListView.setEmptyView(emptyListTextView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        taskListView.setLayoutManager(layoutManager);
 
-        adapter = new TasksArrayAdapter(this, new ArrayList<Task>());
+        adapter = new TasksArrayAdapter(this, new ArrayList<Task>(), this);
         taskListView.setAdapter(adapter);
-
-        taskListView.setOnItemClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        updateEmptyVisibility();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
@@ -158,9 +162,19 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
         mHandler.removeCallbacks(mTaskRefresher);
     }
 
+    private void updateEmptyVisibility() {
+        if (adapter.isEmpty()) {
+            emptyListTextView.setVisibility(View.VISIBLE);
+            taskListView.setVisibility(View.INVISIBLE);
+        } else {
+            emptyListTextView.setVisibility(View.INVISIBLE);
+            taskListView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Task task = (Task) adapter.getItem(position);
+    public void onItemClick(View v, int position) {
+        Task task = adapter.getTask(position);
         if (task != null) {
             Intent taskDetailIntent = new Intent(this, TaskInfoActivity.class);
             taskDetailIntent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, task.getId());
@@ -190,16 +204,19 @@ public class TaskListActivity extends AppCompatActivity implements AdapterView.O
                 if (dsTaskListBase.isSuccess()) {
                     List<Task> tasks = dsTaskListBase.getData().getTasks();
 
-                    int index = taskListView.getFirstVisiblePosition();
-                    View v = taskListView.getChildAt(0);
-                    int top = (v == null) ? 0 : (v.getTop() - taskListView.getPaddingTop());
+                    LinearLayoutManager llm = (LinearLayoutManager) taskListView.getLayoutManager();
+                    int firstItem = llm.findFirstVisibleItemPosition();
+                    View firstView = llm.findViewByPosition(firstItem);
+                    float offsetTop = (firstView != null) ? firstView.getTop() : 0;
 
                     adapter.clear();
                     adapter.addAll(tasks);
 
                     adapter.notifyDataSetChanged();
 
-                    taskListView.setSelectionFromTop(index, top);
+                    updateEmptyVisibility();
+
+                    llm.scrollToPositionWithOffset(firstItem, (int) offsetTop);
                 } else {
                     String text = getString(
                             SynologyDSTaskError.getMessageId(dsTaskListBase.getError().getCode()));

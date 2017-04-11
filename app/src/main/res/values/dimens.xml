@@ -2,4 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="expandedToolbarSize">128dp</dimen>
     <dimen name="dialog_margin">20dp</dimen>
+
+    <dimen name="card_view_elevation">2dp</dimen>
+    <dimen name="card_view_radius">2dp</dimen>
 </resources>
