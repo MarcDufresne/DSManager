@@ -76,11 +76,12 @@
 
     <string name="title_activity_task_info">TaskInfoActivity</string>
     <string name="detail_general_header">General</string>
-    <string name="detail_destination_label">Destination:</string>
-    <string name="detail_download_label">Download:</string>
-    <string name="detail_size_label">Size:</string>
+    <string name="detail_destination_label">Destination</string>
+    <string name="detail_download_label">Download</string>
+    <string name="detail_size_label">Size</string>
+    <string name="detail_eta_label">ETA</string>
     <string name="detail_tracker_header">Tracker</string>
-    <string name="detail_upload_label">Upload:</string>
+    <string name="detail_upload_label">Upload</string>
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_pause">Pause</string>
@@ -106,4 +107,5 @@
     <string name="edit_task_success">Task moved successfully</string>
     <string name="pause_task_success">Task paused successfully</string>
     <string name="resume_task_success">Task resumed successfully</string>
+    <string name="icon_content_description">ICON</string>
 </resources>
