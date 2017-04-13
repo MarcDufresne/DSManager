@@ -57,9 +57,6 @@ public class DSStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSSt
                         SynologyBaseError.getMessageId(dsStatsInfoBase.getError().getCode()));
                 debugTextView.setText(text);
             }
-
-
-
         }
     }
 }

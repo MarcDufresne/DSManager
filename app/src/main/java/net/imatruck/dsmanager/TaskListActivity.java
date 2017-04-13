@@ -20,10 +20,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.models.AuthLoginBase;
+import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
+import net.imatruck.dsmanager.utils.BytesFormatter;
 import net.imatruck.dsmanager.utils.SynologyBaseError;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 import net.imatruck.dsmanager.views.adapters.TaskListOnClickListener;
@@ -32,6 +34,7 @@ import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -106,6 +109,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
             }
         } else {
             new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
+            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
             startPeriodicRefresh();
         }
     }
@@ -149,6 +153,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         @Override
         public void run() {
             new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
+            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
             mHandler.postDelayed(mTaskRefresher, mInterval);
         }
     };
@@ -227,6 +232,37 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                 String text = getString(R.string.synapi_error_1);
                 Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
                 stopPeriodicRefresh();
+            }
+        }
+    }
+
+    private class GetStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSStatsInfoBase> {
+
+        @SafeVarargs
+        @Override
+        protected final DSStatsInfoBase doInBackground(Call<DSStatsInfoBase>... calls) {
+            DSStatsInfoBase dsStatsInfoBase;
+            try {
+                dsStatsInfoBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return dsStatsInfoBase;
+        }
+
+        @Override
+        protected void onPostExecute(DSStatsInfoBase dsStatsInfoBase) {
+            if (dsStatsInfoBase != null) {
+                if (dsStatsInfoBase.isSuccess()) {
+                    String text = String.format(Locale.getDefault(), "↓ %s - ↑ %s",
+                            BytesFormatter.humanReadable(dsStatsInfoBase.getData().getSpeedDownload(), true),
+                            BytesFormatter.humanReadable(dsStatsInfoBase.getData().getSpeedUpload(), true));
+                    toolbar.setSubtitle(text);
+                }
+            } else {
+                toolbar.setSubtitle(null);
             }
         }
     }
