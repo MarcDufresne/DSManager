@@ -136,6 +136,11 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
             new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
         }
 
+        if (id == R.id.action_server_config) {
+            Intent serverConfigIntent = new Intent(this, ServerConfigActivity.class);
+            startActivity(serverConfigIntent);
+        }
+
         if (id == R.id.action_settings) {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);

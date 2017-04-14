@@ -11,6 +11,13 @@
         android:icon="@drawable/ic_autorenew_white_24dp" />
 
     <item
+        android:id="@+id/action_server_config"
+        android:orderInCategory="40"
+        android:title="Server Config"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_build_white_24px"/>
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

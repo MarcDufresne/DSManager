@@ -86,6 +86,7 @@
     <string name="action_delete">Delete</string>
     <string name="action_pause">Pause</string>
     <string name="action_resume">Resume</string>
+    <string name="action_save">Save</string>
 
     <string name="title_activity_add_task">Add a Task</string>
     <string name="pref_key_default_destination">pref_default_destination</string>
@@ -108,4 +109,21 @@
     <string name="pause_task_success">Task paused successfully</string>
     <string name="resume_task_success">Task resumed successfully</string>
     <string name="icon_content_description">ICON</string>
+    <string name="title_activity_server_config">Server Config</string>
+    <string name="config_label_kbs">KB/s</string>
+    <string name="config_label_transfer">Transfer</string>
+    <string name="config_hint_bt_download_speed">BT Download Speed</string>
+    <string name="config_hint_bt_upload_speed">BT Upload Speed</string>
+    <string name="config_hint_emule_download_speed">Emule Download Speed</string>
+    <string name="config_hint_emule_upload_speed">Emule Upload Speed</string>
+    <string name="config_hint_nzb_download_speed">NZB Download Speed</string>
+    <string name="config_hint_http_ftp_download_speed">HTTP/FTP Download Speed</string>
+    <string name="config_set_success">Saved server config</string>
+    <string name="config_set_fail">Could not save server config</string>
+    <string name="config_set_fail_network">Could not save server config, network error</string>
+    <string name="config_get_fail">Could not get server config</string>
+    <string name="config_get_fail_network">Could not get server config, network error</string>
+    <string name="config_label_storage">Storage</string>
+    <string name="config_hint_default_destination">Default Destination</string>
+    <string name="config_hint_emule_default_destination">Emule Default Destination</string>
 </resources>

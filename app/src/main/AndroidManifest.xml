@@ -57,6 +57,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.imatruck.dsmanager.TaskListActivity" />
         </activity>
+        <activity
+            android:name=".ServerConfigActivity"
+            android:label="@string/title_activity_server_config"
+            android:parentActivityName=".TaskListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.imatruck.dsmanager.TaskListActivity" />
+        </activity>
     </application>
 
 </manifest>

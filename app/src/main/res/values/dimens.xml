@@ -5,4 +5,7 @@
 
     <dimen name="card_view_elevation">2dp</dimen>
     <dimen name="card_view_radius">2dp</dimen>
+
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
 </resources>
