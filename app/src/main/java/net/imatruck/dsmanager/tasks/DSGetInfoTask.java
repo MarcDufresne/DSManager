@@ -13,9 +13,6 @@ import java.io.IOException;
 
 import retrofit2.Call;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class DSGetInfoTask extends AsyncTask<Call<DSGetInfoBase>, Void, DSGetInfoBase> {
 

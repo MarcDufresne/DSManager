@@ -1,9 +1,7 @@
 package net.imatruck.dsmanager.models;
 
-/**
- * Created by marc on 2017-03-26.
- */
 
+@SuppressWarnings("unused")
 class DSTaskActionBaseModel {
     private int error;
     private String id;

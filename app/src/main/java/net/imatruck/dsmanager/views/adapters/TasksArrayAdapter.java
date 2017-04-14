@@ -2,16 +2,12 @@ package net.imatruck.dsmanager.views.adapters;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,17 +18,9 @@ import net.imatruck.dsmanager.utils.EtaFormatter;
 import net.imatruck.dsmanager.utils.PercentFormatter;
 import net.imatruck.dsmanager.utils.StatusFormatter;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-/**
- * Created by marc on 2017-03-26.
- */
 
 public class TasksArrayAdapter extends RecyclerView.Adapter<TasksArrayAdapter.ViewHolder> {
 
@@ -130,7 +118,7 @@ public class TasksArrayAdapter extends RecyclerView.Adapter<TasksArrayAdapter.Vi
 
         @Override
         public void onClick(View v) {
-            itemClickListener.onItemClick(v, this.getLayoutPosition());
+            itemClickListener.onItemClick(this.getLayoutPosition());
         }
     }
 }

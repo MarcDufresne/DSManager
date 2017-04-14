@@ -2,10 +2,8 @@ package net.imatruck.dsmanager.models;
 
 import java.util.List;
 
-/**
- * Created by marc on 2017-03-26.
- */
 
+@SuppressWarnings("unused")
 public class DSTaskResumeBase extends BaseModel {
 
     private List<DSTaskResumeData> data;

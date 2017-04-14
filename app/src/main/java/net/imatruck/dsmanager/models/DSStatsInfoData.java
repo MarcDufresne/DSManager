@@ -2,10 +2,8 @@ package net.imatruck.dsmanager.models;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by marc on 2017-03-26.
- */
 
+@SuppressWarnings("unused")
 public class DSStatsInfoData {
 
     @SerializedName("speed_download")

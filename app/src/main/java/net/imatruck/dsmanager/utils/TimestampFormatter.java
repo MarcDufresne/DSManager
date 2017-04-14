@@ -6,12 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by marc on 2017-03-25.
- */
 
 public class TimestampFormatter {
 
+    /**
+     * Converts a timestamp into a human readable relative description
+     * i.e.: 2 days ago | 3 hours ago
+     *
+     * @param timestamp unix timestamp
+     * @return relative time description (1 day ago) with formatted date (Apr 21 3:45)
+     */
     public static String timestampToDatetime(long timestamp) {
         if (timestamp <= 0) return "N/A";
         Date date = new Date(timestamp);

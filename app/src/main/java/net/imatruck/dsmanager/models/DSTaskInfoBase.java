@@ -1,9 +1,7 @@
 package net.imatruck.dsmanager.models;
 
-/**
- * Created by marc on 2017-03-25.
- */
 
+@SuppressWarnings("unused")
 public class DSTaskInfoBase extends BaseModel {
     private DSTaskInfoData data;
 

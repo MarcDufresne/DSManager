@@ -82,10 +82,7 @@ public class FileUtils {
      * @return Whether the URI is a local one.
      */
     public static boolean isLocal(String url) {
-        if (url != null && !url.startsWith("http://") && !url.startsWith("https://")) {
-            return true;
-        }
-        return false;
+        return url != null && !url.startsWith("http://") && !url.startsWith("https://");
     }
 
     /**
@@ -125,12 +122,12 @@ public class FileUtils {
                 String filepath = file.getAbsolutePath();
 
                 // Construct path without file name.
-                String pathwithoutname = filepath.substring(0,
+                String pathWithoutName = filepath.substring(0,
                         filepath.length() - filename.length());
-                if (pathwithoutname.endsWith("/")) {
-                    pathwithoutname = pathwithoutname.substring(0, pathwithoutname.length() - 1);
+                if (pathWithoutName.endsWith("/")) {
+                    pathWithoutName = pathWithoutName.substring(0, pathWithoutName.length() - 1);
                 }
-                return new File(pathwithoutname);
+                return new File(pathWithoutName);
             }
         }
         return null;

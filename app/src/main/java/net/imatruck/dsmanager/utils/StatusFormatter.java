@@ -2,12 +2,14 @@ package net.imatruck.dsmanager.utils;
 
 import net.imatruck.dsmanager.R;
 
-/**
- * Created by marc on 2017-03-26.
- */
 
 public class StatusFormatter {
 
+    /**
+     * Converts DownloadStation API status to resource string ID
+     * @param status synology API status string
+     * @return resource string ID for corresponding status
+     */
     public static int getStatusString(String status) {
 
         switch (status) {
@@ -37,6 +39,11 @@ public class StatusFormatter {
         }
     }
 
+    /**
+     * Converts DownloadStation API status to a resource color ID
+     * @param status synology API status string
+     * @return resource color ID
+     */
     public static int getStatusColor(String status) {
 
         switch (status) {

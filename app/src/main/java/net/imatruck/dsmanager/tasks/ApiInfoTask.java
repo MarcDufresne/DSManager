@@ -13,9 +13,6 @@ import java.util.Map;
 
 import retrofit2.Call;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class ApiInfoTask extends AsyncTask<Call<APIInfoBase>, Void, APIInfoBase> {
 

@@ -12,9 +12,6 @@ import java.io.IOException;
 
 import retrofit2.Call;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class DSSetConfigTask extends AsyncTask<Call<DSSetConfigBase>, Void, DSSetConfigBase> {
 

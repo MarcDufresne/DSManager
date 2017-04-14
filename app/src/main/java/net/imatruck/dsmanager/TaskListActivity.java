@@ -15,8 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import net.imatruck.dsmanager.models.AuthLoginBase;
@@ -57,7 +55,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     SynologyAPI synologyApi;
 
-    private int mInterval = 3000;
     private Handler mHandler;
 
     @Override
@@ -159,7 +156,8 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         public void run() {
             new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
             new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
-            mHandler.postDelayed(mTaskRefresher, mInterval);
+            int interval = 3000;
+            mHandler.postDelayed(mTaskRefresher, interval);
         }
     };
 
@@ -183,7 +181,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     }
 
     @Override
-    public void onItemClick(View v, int position) {
+    public void onItemClick(int position) {
         Task task = adapter.getTask(position);
         if (task != null) {
             Intent taskDetailIntent = new Intent(this, TaskInfoActivity.class);

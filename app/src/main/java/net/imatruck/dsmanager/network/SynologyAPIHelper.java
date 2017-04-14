@@ -11,9 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class SynologyAPIHelper {
 

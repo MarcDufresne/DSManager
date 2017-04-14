@@ -14,9 +14,6 @@ import java.util.Locale;
 
 import retrofit2.Call;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class DSStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSStatsInfoBase> {
 
@@ -45,7 +42,6 @@ public class DSStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSSt
     protected void onPostExecute(DSStatsInfoBase dsStatsInfoBase) {
         if (dsStatsInfoBase != null) {
             TextView debugTextView = (TextView) context.findViewById(R.id.debug_api_text);
-            String result = "";
 
             if (dsStatsInfoBase.isSuccess()) {
                 String text = String.format(Locale.getDefault(), "DL: %s\nUL: %s",

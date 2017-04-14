@@ -2,12 +2,14 @@ package net.imatruck.dsmanager.utils;
 
 import net.imatruck.dsmanager.R;
 
-/**
- * Created by marc on 2017-03-26.
- */
 
 public class SynologyDSTaskError extends SynologyBaseError {
 
+    /**
+     * Converts DownloadStation API error codes into resource string ID
+     * @param code synology API error code
+     * @return resource string ID of the corresponding error
+     */
     public static int getMessageId(int code) {
         switch (code) {
             case 400:

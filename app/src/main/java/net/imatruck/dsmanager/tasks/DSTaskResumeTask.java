@@ -15,9 +15,6 @@ import java.util.Locale;
 
 import retrofit2.Call;
 
-/**
- * Created by marc on 2017-03-24.
- */
 
 public class DSTaskResumeTask extends AsyncTask<Call<DSTaskResumeBase>, Void, DSTaskResumeBase> {
 

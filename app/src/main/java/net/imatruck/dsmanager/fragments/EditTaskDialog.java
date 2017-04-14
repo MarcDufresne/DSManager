@@ -12,9 +12,6 @@ import android.widget.EditText;
 
 import net.imatruck.dsmanager.R;
 
-/**
- * Created by marc on 2017-04-08.
- */
 
 public class EditTaskDialog extends AppCompatDialogFragment {
 

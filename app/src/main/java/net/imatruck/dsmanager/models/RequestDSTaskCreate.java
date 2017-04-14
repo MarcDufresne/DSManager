@@ -1,20 +1,11 @@
 package net.imatruck.dsmanager.models;
 
-import android.net.Uri;
-
-import net.imatruck.dsmanager.network.SynologyAPI;
-import net.imatruck.dsmanager.network.SynologyAPIHelper;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Retrofit;
 
-/**
- * Created by marc on 2017-03-25.
- */
 
 public class RequestDSTaskCreate {
     private static final String api = "SYNO.DownloadStation.Task";

@@ -21,7 +21,6 @@ import net.imatruck.dsmanager.models.DSTaskEditBase;
 import net.imatruck.dsmanager.models.DSTaskInfoBase;
 import net.imatruck.dsmanager.models.DSTaskPauseBase;
 import net.imatruck.dsmanager.models.DSTaskResumeBase;
-import net.imatruck.dsmanager.models.DSTaskResumeData;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.models.TaskAdditionalTransfer;
 import net.imatruck.dsmanager.network.SynologyAPI;
@@ -68,7 +67,6 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
     String sidHeader;
     String taskId;
 
-    private int mInterval = 3000;
     private Handler mHandler;
 
     public static final String EXTRA_TASK_ID = "extra_task_id";
@@ -140,7 +138,8 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
         @Override
         public void run() {
             new GetTaskDetailTask().execute(synologyAPI.dsTaskInfo(sidHeader, taskId));
-            mHandler.postDelayed(mTaskRefresher, mInterval);
+            int interval = 3000;
+            mHandler.postDelayed(mTaskRefresher, interval);
         }
     };
 
