@@ -9,7 +9,7 @@ public class BytesFormatter {
      * Formats a number of bytes in a human readable format
      * i.e: 1KB | 23MB | 1.2GB | 566B
      *
-     * @param bytes number of bytes
+     * @param bytes   number of bytes
      * @param isSpeed result will be suffixed as "/s" (bytes per second)
      * @return formatted number of bytes in human readable form: B, KB, MB, GB, TB, PB or EB
      */
@@ -21,7 +21,7 @@ public class BytesFormatter {
 
         int exp = (int) (Math.log(bytes) / Math.log(unit));
 
-        String pre = "KMGTPE".charAt(exp-1) + "";
+        String pre = "KMGTPE".charAt(exp - 1) + "";
 
         return String.format(Locale.getDefault(), "%.1f %sB%s",
                 bytes / Math.pow(unit, exp), pre, isSpeed ? "/s" : "");

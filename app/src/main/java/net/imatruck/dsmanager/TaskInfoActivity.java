@@ -41,6 +41,8 @@ import retrofit2.Call;
 
 public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialog.EditTaskListener {
 
+    public static final String EXTRA_TASK_ID = "extra_task_id";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.detail_title_text)
@@ -69,7 +71,14 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
 
     private Handler mHandler;
 
-    public static final String EXTRA_TASK_ID = "extra_task_id";
+    Runnable mTaskRefresher = new Runnable() {
+        @Override
+        public void run() {
+            new GetTaskDetailTask().execute(synologyAPI.dsTaskInfo(sidHeader, taskId));
+            int interval = 3000;
+            mHandler.postDelayed(mTaskRefresher, interval);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,15 +142,6 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
 
         return super.onOptionsItemSelected(item);
     }
-
-    Runnable mTaskRefresher = new Runnable() {
-        @Override
-        public void run() {
-            new GetTaskDetailTask().execute(synologyAPI.dsTaskInfo(sidHeader, taskId));
-            int interval = 3000;
-            mHandler.postDelayed(mTaskRefresher, interval);
-        }
-    };
 
     private void startPeriodicRefresh() {
         mTaskRefresher.run();
@@ -269,7 +269,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
             if (dsTaskEditBase != null) {
                 if (dsTaskEditBase.isSuccess()) {
                     Snackbar.make(toolbar, R.string.edit_task_success,
-                                Snackbar.LENGTH_LONG).show();
+                            Snackbar.LENGTH_LONG).show();
 
                 } else {
                     String text = getString(

@@ -75,15 +75,15 @@ public interface SynologyAPI {
             "version=2&" +
             "method=setserverconfig")
     Call<DSSetConfigBase> dsSetConfig(@Header("Cookie") String sid,
-        @Query("bt_max_download") Integer btMaxDownload,
-        @Query("bt_max_upload") Integer btMaxUpload,
-        @Query("default_destination") String defaultDestination,
-        @Query("emule_default_destination") String emuleDefaultDestination,
-        @Query("emule_max_download") Integer emuleMaxDownload,
-        @Query("emule_max_upload") Integer emuleMaxUpload,
-        @Query("ftp_max_download") Integer ftpMaxDownload,
-        @Query("http_max_download") Integer httpMaxDownload,
-        @Query("nzb_max_download") Integer nzbMaxDownload);
+                                      @Query("bt_max_download") Integer btMaxDownload,
+                                      @Query("bt_max_upload") Integer btMaxUpload,
+                                      @Query("default_destination") String defaultDestination,
+                                      @Query("emule_default_destination") String emuleDefaultDestination,
+                                      @Query("emule_max_download") Integer emuleMaxDownload,
+                                      @Query("emule_max_upload") Integer emuleMaxUpload,
+                                      @Query("ftp_max_download") Integer ftpMaxDownload,
+                                      @Query("http_max_download") Integer httpMaxDownload,
+                                      @Query("nzb_max_download") Integer nzbMaxDownload);
 
     @GET("DownloadStation/task.cgi?" +
             "api=SYNO.DownloadStation.Task&" +
@@ -98,7 +98,7 @@ public interface SynologyAPI {
             "method=getinfo&" +
             "additional=detail,file,tracker,transfer")
     Call<DSTaskInfoBase> dsTaskInfo(@Header("Cookie") String sid,
-        @Query("id") String id);
+                                    @Query("id") String id);
 
     @FormUrlEncoded
     @POST("DownloadStation/task.cgi")
@@ -115,29 +115,29 @@ public interface SynologyAPI {
             "version=2&" +
             "method=delete")
     Call<DSTaskDeleteBase> dsTaskDelete(@Header("Cookie") String sid,
-        @Query("id") String id);
+                                        @Query("id") String id);
 
     @GET("DownloadStation/task.cgi?" +
             "api=SYNO.DownloadStation.Task&" +
             "version=2&" +
             "method=pause")
     Call<DSTaskPauseBase> dsTaskPause(@Header("Cookie") String sid,
-        @Query("id") String id);
+                                      @Query("id") String id);
 
     @GET("DownloadStation/task.cgi?" +
             "api=SYNO.DownloadStation.Task&" +
             "version=2&" +
             "method=resume")
     Call<DSTaskResumeBase> dsTaskResume(@Header("Cookie") String sid,
-        @Query("id") String id);
+                                        @Query("id") String id);
 
     @GET("DownloadStation/task.cgi?" +
             "api=SYNO.DownloadStation.Task&" +
             "version=2&" +
             "method=edit")
     Call<DSTaskEditBase> dsTaskEdit(@Header("Cookie") String sid,
-        @Query("id") String id,
-        @Query("destination") String destination);
+                                    @Query("id") String id,
+                                    @Query("destination") String destination);
 
     @GET("DownloadStation/statistic.cgi?" +
             "api=SYNO.DownloadStation.Statistic&" +

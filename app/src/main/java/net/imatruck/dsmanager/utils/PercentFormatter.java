@@ -5,6 +5,7 @@ public class PercentFormatter {
 
     /**
      * Returns the percentage of {@code a} over {@code b}
+     *
      * @param a current value
      * @param b total value
      * @return percentage

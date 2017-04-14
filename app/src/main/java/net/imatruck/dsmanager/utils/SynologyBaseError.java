@@ -7,6 +7,7 @@ public class SynologyBaseError {
 
     /**
      * Converts Synology API error codes into resource string ID
+     *
      * @param code synology API error code
      * @return resource string ID of the corresponding error
      */

@@ -57,6 +57,16 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     private Handler mHandler;
 
+    Runnable mTaskRefresher = new Runnable() {
+        @Override
+        public void run() {
+            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
+            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
+            int interval = 3000;
+            mHandler.postDelayed(mTaskRefresher, interval);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,16 +160,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
         return super.onOptionsItemSelected(item);
     }
-
-    Runnable mTaskRefresher = new Runnable() {
-        @Override
-        public void run() {
-            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
-            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
-            int interval = 3000;
-            mHandler.postDelayed(mTaskRefresher, interval);
-        }
-    };
 
     private void startPeriodicRefresh() {
         stopPeriodicRefresh();

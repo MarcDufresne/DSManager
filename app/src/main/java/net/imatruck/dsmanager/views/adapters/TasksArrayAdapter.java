@@ -24,9 +24,9 @@ import java.util.Locale;
 
 public class TasksArrayAdapter extends RecyclerView.Adapter<TasksArrayAdapter.ViewHolder> {
 
+    private static TaskListOnClickListener itemClickListener;
     private Context context;
     private List<Task> tasks;
-    private static TaskListOnClickListener itemClickListener;
 
     public TasksArrayAdapter(@NonNull Context context, @NonNull List<Task> tasks,
                              TaskListOnClickListener listener) {
@@ -104,6 +104,7 @@ public class TasksArrayAdapter extends RecyclerView.Adapter<TasksArrayAdapter.Vi
         TextView labelLeftText;
 
         TextView labelRightText;
+
         ViewHolder(View itemView) {
             super(itemView);
             titleText = (TextView) itemView.findViewById(R.id.row_task_title);

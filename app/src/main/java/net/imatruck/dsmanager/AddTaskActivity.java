@@ -45,6 +45,9 @@ import retrofit2.Call;
 
 public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
+    private final static int READ_REQUEST_CODE = 90;
+    private final static int PERMISSION_CHECK_REQUEST_CODE = 65;
+
     @BindView(R.id.radio_group_type)
     RadioGroup radioGroup;
     @BindView(R.id.radio_uri)
@@ -61,12 +64,9 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
     String sid;
     String sidHeader;
     String defaultDestination;
-    SynologyAPI synologyApi;
-
     Uri fileUri;
 
-    private final static int READ_REQUEST_CODE = 90;
-    private final static int PERMISSION_CHECK_REQUEST_CODE = 65;
+    SynologyAPI synologyApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

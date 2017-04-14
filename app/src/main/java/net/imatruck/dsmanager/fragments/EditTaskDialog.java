@@ -15,11 +15,6 @@ import net.imatruck.dsmanager.R;
 
 public class EditTaskDialog extends AppCompatDialogFragment {
 
-    public interface EditTaskListener {
-        void onDialogConfirmMove(String newDestination);
-        void onDialogCancelMove();
-    }
-
     EditTaskListener mListener;
 
     @NonNull
@@ -51,18 +46,18 @@ public class EditTaskDialog extends AppCompatDialogFragment {
                 .setView(container)
                 .setPositiveButton(R.string.edit_task_dialog_confirm,
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.onDialogConfirmMove(newDestinationEditText.getText().toString());
-                    }
-                })
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mListener.onDialogConfirmMove(newDestinationEditText.getText().toString());
+                            }
+                        })
                 .setNegativeButton(R.string.edit_task_dialog_cancel,
                         new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mListener.onDialogCancelMove();
-                    }
-                })
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mListener.onDialogCancelMove();
+                            }
+                        })
                 .setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
@@ -82,5 +77,11 @@ public class EditTaskDialog extends AppCompatDialogFragment {
         } catch (ClassCastException cce) {
             throw new ClassCastException(context.toString() + " must implement EditTaskListener");
         }
+    }
+
+    public interface EditTaskListener {
+        void onDialogConfirmMove(String newDestination);
+
+        void onDialogCancelMove();
     }
 }

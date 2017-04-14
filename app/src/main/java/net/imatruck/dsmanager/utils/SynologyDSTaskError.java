@@ -7,6 +7,7 @@ public class SynologyDSTaskError extends SynologyBaseError {
 
     /**
      * Converts DownloadStation API error codes into resource string ID
+     *
      * @param code synology API error code
      * @return resource string ID of the corresponding error
      */
