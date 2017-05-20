@@ -99,7 +99,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
 
-        synologyApi = SynologyAPIHelper.getSynologyApi(this);
+        synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         mHandler = new Handler();
 
@@ -227,7 +227,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                     llm.scrollToPositionWithOffset(firstItem, (int) offsetTop);
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskListBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskListBase.getError().getCode()));
                     Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
                     stopPeriodicRefresh();
                 }
@@ -260,8 +260,8 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
             if (dsStatsInfoBase != null) {
                 if (dsStatsInfoBase.isSuccess()) {
                     String text = String.format(Locale.getDefault(), "↓ %s - ↑ %s",
-                            BytesFormatter.humanReadable(dsStatsInfoBase.getData().getSpeedDownload(), true),
-                            BytesFormatter.humanReadable(dsStatsInfoBase.getData().getSpeedUpload(), true));
+                            BytesFormatter.INSTANCE.humanReadable(dsStatsInfoBase.getData().getSpeedDownload(), true),
+                            BytesFormatter.INSTANCE.humanReadable(dsStatsInfoBase.getData().getSpeedUpload(), true));
                     toolbar.setSubtitle(text);
                 }
             } else {
@@ -303,7 +303,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
                     startPeriodicRefresh();
                 } else {
-                    String error = getString(SynologyBaseError.getMessageId(
+                    String error = getString(SynologyBaseError.Companion.getMessageId(
                             authLoginBase.getError().getCode()));
                     Snackbar.make(toolbar, error, Snackbar.LENGTH_LONG);
                     stopPeriodicRefresh();

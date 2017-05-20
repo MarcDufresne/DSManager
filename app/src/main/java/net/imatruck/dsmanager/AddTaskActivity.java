@@ -104,7 +104,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
             defaultDestination = prefs.getString(getString(R.string.pref_key_default_destination), null);
 
-            synologyApi = SynologyAPIHelper.getSynologyApi(this);
+            synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
             if (radioUri.isChecked() && !editInputUri.getText().toString().isEmpty()) {
                 Map<String, String> request = createUriRequest();
@@ -127,7 +127,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             destination = defaultDestination;
         }
 
-        return RequestDSTaskCreate.getCreateWithUriDestinationMap(
+        return RequestDSTaskCreate.INSTANCE.getCreateWithUriDestinationMap(
                 sid, uri, destination);
 
     }
@@ -139,12 +139,12 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             destination = defaultDestination;
         }
 
-        return RequestDSTaskCreate.getCreateWithFileDestination(destination);
+        return RequestDSTaskCreate.INSTANCE.getCreateWithFileDestination(destination);
 
     }
 
     private MultipartBody.Part prepareFile() {
-        File file = FileUtils.getFile(this, fileUri);
+        File file = FileUtils.INSTANCE.getFile(this, fileUri);
 
         RequestBody requestFile = RequestBody.create(
                 MediaType.parse(getContentResolver().getType(fileUri)),
@@ -172,7 +172,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
     }
 
     private void startFilePickerActivity() {
-        Intent filePicker = FileUtils.createGetContentIntent("application/x-bittorrent");
+        Intent filePicker = FileUtils.INSTANCE.createGetContentIntent("application/x-bittorrent");
         startActivityForResult(filePicker, READ_REQUEST_CODE);
     }
 
@@ -241,7 +241,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
                     finish();
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskCreateBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskCreateBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {

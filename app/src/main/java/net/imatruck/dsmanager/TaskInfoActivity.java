@@ -105,7 +105,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
 
-        synologyAPI = SynologyAPIHelper.getSynologyApi(this);
+        synologyAPI = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         new GetTaskDetailTask().execute(synologyAPI.dsTaskInfo(sidHeader, taskId));
 
@@ -165,26 +165,26 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
         double downloadSpeed = transfer.getSpeedDownload();
         double uploadSpeed = transfer.getSpeedUpload();
 
-        String statusString = getString(StatusFormatter.getStatusString(statusCode));
+        String statusString = getString(StatusFormatter.INSTANCE.getStatusString(statusCode));
 
-        int percentDone = (int) PercentFormatter.toPercent(sizeDownloaded, size);
+        int percentDone = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded, size);
         String percentString = String.format(Locale.getDefault(), "%d%%", percentDone);
-        int colorRes = StatusFormatter.getStatusColor(task.getStatus());
+        int colorRes = StatusFormatter.INSTANCE.getStatusColor(task.getStatus());
         int color = ResourcesCompat.getColor(getResources(), colorRes, null);
 
-        String downloadSpeedString = BytesFormatter.humanReadable(downloadSpeed, true);
-        String uploadSpeedString = BytesFormatter.humanReadable(uploadSpeed, true);
-        String sizeDownloadedString = BytesFormatter.humanReadable(sizeDownloaded, false);
-        String sizeUploadedString = BytesFormatter.humanReadable(sizeUploaded, false);
+        String downloadSpeedString = BytesFormatter.INSTANCE.humanReadable(downloadSpeed, true);
+        String uploadSpeedString = BytesFormatter.INSTANCE.humanReadable(uploadSpeed, true);
+        String sizeDownloadedString = BytesFormatter.INSTANCE.humanReadable(sizeDownloaded, false);
+        String sizeUploadedString = BytesFormatter.INSTANCE.humanReadable(sizeUploaded, false);
 
         String downloadString = String.format(Locale.getDefault(), "%s (%s)",
                 downloadSpeedString, sizeDownloadedString);
         String uploadString = String.format(Locale.getDefault(), "%s (%s)",
                 uploadSpeedString, sizeUploadedString);
 
-        String etaString = EtaFormatter.calculateEta(sizeDownloaded, size, downloadSpeed);
+        String etaString = EtaFormatter.INSTANCE.calculateEta(sizeDownloaded, size, downloadSpeed);
 
-        String sizeString = BytesFormatter.humanReadable(size, false);
+        String sizeString = BytesFormatter.INSTANCE.humanReadable(size, false);
 
         detailTitleText.setText(title);
         detailStatusText.setText(statusString);
@@ -238,7 +238,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
                     }
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskInfoBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskInfoBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
@@ -273,7 +273,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
 
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskEditBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskEditBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
@@ -308,7 +308,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
 
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskPauseBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskPauseBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
@@ -343,7 +343,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
 
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskResumeBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskResumeBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
@@ -376,7 +376,7 @@ public class TaskInfoActivity extends AppCompatActivity implements EditTaskDialo
                     finish();
                 } else {
                     String text = getString(
-                            SynologyDSTaskError.getMessageId(dsTaskDeleteBase.getError().getCode()));
+                            SynologyDSTaskError.Companion.getMessageId(dsTaskDeleteBase.getError().getCode()));
                     Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {

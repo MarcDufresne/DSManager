@@ -60,7 +60,7 @@ public class ServerConfigActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        synologyAPI = SynologyAPIHelper.getSynologyApi(this);
+        synologyAPI = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = sharedPreferences.getString(getString(R.string.pref_key_sid_header), null);

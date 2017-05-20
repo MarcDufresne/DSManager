@@ -64,7 +64,7 @@ public class DebugActivity extends AppCompatActivity {
         String sid = prefs.getString(getString(R.string.pref_key_sid), "");
         debugTextSid.setText(sid);
 
-        synologyApi = SynologyAPIHelper.getSynologyApi(this);
+        synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +114,7 @@ public class DebugActivity extends AppCompatActivity {
                         break;
                     case 8: //  DS Task Create URI
                         new DSTaskCreateTask(DebugActivity.this).execute(synologyApi.dsTaskCreateUri(
-                                RequestDSTaskCreate.getCreateWithURIMap(sid, editTextValue)));
+                                RequestDSTaskCreate.INSTANCE.getCreateWithURIMap(sid, editTextValue)));
                         break;
                     case 9: // DS Task Create File
                         break;
