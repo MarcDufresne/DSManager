@@ -39,7 +39,7 @@ class DSSetConfigTask(private val context: Activity) : AsyncTask<Call<DSSetConfi
                 debug_text_view.text = text
             } else {
                 val text = context.getString(
-                        SynologyBaseError.getMessageId(dsInfo.error!!.code))
+                        SynologyBaseError.getMessageId(dsInfo.error.code))
                 debug_text_view.text = text
             }
         }

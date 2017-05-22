@@ -40,8 +40,8 @@ class TasksArrayAdapter(private val context: Context, private val tasks: Mutable
         val colorRes = StatusFormatter.getStatusColor(task.status)
         val color = ResourcesCompat.getColor(context.resources, colorRes, null)
         val size = task.size
-        val speedDownload = task.additional!!.transfer!!.speedDownload
-        val speedUpload = task.additional.transfer!!.speedUpload
+        val speedDownload = task.additional.transfer.speedDownload
+        val speedUpload = task.additional.transfer.speedUpload
         val sizeDownloaded = task.additional.transfer.sizeDownloaded
         val percent = PercentFormatter.toPercent(sizeDownloaded, size)
 

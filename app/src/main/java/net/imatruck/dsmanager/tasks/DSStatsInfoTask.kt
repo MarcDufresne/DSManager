@@ -37,12 +37,12 @@ class DSStatsInfoTask(private val context: Activity) : AsyncTask<Call<DSStatsInf
 
             if (dsStatsInfoBase.isSuccess) {
                 val text = String.format(Locale.getDefault(), "DL: %s\nUL: %s",
-                        BytesFormatter.humanReadable(dsStatsInfoBase.data!!.speedDownload, true),
+                        BytesFormatter.humanReadable(dsStatsInfoBase.data.speedDownload, true),
                         BytesFormatter.humanReadable(dsStatsInfoBase.data.speedUpload, true))
                 debugTextView.text = text
             } else {
                 val text = String.format(Locale.getDefault(), "Error: %s\n",
-                        SynologyBaseError.getMessageId(dsStatsInfoBase.error!!.code))
+                        SynologyBaseError.getMessageId(dsStatsInfoBase.error.code))
                 debugTextView.text = text
             }
         }

@@ -47,7 +47,7 @@ class AuthLoginTask(private val context: Activity) : AsyncTask<Call<AuthLoginBas
                 val prefs = PreferenceManager.getDefaultSharedPreferences(context)
                 val editor = prefs.edit()
                 editor.putString(context.getString(R.string.pref_key_sid), sid)
-                editor.putString(context.getString(R.string.pref_key_sid_header), "id=" + sid!!)
+                editor.putString(context.getString(R.string.pref_key_sid_header), "id=" + sid)
                 editor.apply()
 
                 val debug_text_view_sid = context.findViewById(R.id.debug_api_sid) as TextView

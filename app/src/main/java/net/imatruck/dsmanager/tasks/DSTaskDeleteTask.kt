@@ -39,7 +39,7 @@ class DSTaskDeleteTask(private val context: Activity) : AsyncTask<Call<DSTaskDel
                 val infoData = dsInfo.data
                 var text = ""
 
-                for (dsTaskDeleteData in infoData!!) {
+                for (dsTaskDeleteData in infoData) {
                     text += String.format(Locale.getDefault(),
                             "%s: %s\n",
                             dsTaskDeleteData.id,
@@ -50,7 +50,7 @@ class DSTaskDeleteTask(private val context: Activity) : AsyncTask<Call<DSTaskDel
                 debugTextView.text = text
             } else {
                 val text = context.getString(
-                        SynologyDSTaskError.getMessageId(dsInfo.error!!.code))
+                        SynologyDSTaskError.getMessageId(dsInfo.error.code))
                 debugTextView.text = text
             }
         }

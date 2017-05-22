@@ -36,13 +36,13 @@ class DSGetConfigTask(private val context: Activity) : AsyncTask<Call<DSGetConfi
 
             if (success) {
                 val infoData = dsInfo.data
-                var text = "BT Max DL: " + infoData!!.btMaxDownload
-                text += "\nBT Max UL: " + infoData!!.btMaxUpload
-                text += "\nDefault Dest: " + infoData!!.defaultDestination!!
+                var text = "BT Max DL: " + infoData.btMaxDownload
+                text += "\nBT Max UL: " + infoData.btMaxUpload
+                text += "\nDefault Dest: " + infoData.defaultDestination
                 debug_text_view.text = text
             } else {
                 val text = context.getString(
-                        SynologyBaseError.getMessageId(dsInfo.error!!.code))
+                        SynologyBaseError.getMessageId(dsInfo.error.code))
                 debug_text_view.text = text
             }
         }

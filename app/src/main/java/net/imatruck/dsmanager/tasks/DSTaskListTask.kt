@@ -42,17 +42,17 @@ class DSTaskListTask(private val context: Activity) : AsyncTask<Call<DSTaskListB
                 val infoData = dsInfo.data
                 var text = ""
 
-                for (task in infoData!!.tasks!!) {
+                for (task in infoData.tasks) {
                     text += String.format(Locale.getDefault(),
                             "%s: %s\n%.2f%%, %s - Down: %s - Up: %s - ETA: %s\n\n",
                             task.id,
                             task.title,
                             PercentFormatter.toPercent(
-                                    task.additional!!.transfer!!.sizeDownloaded,
+                                    task.additional.transfer.sizeDownloaded,
                                     task.size),
                             BytesFormatter.humanReadable(task.size, false),
                             BytesFormatter.humanReadable(
-                                    task.additional.transfer!!.speedDownload, true),
+                                    task.additional.transfer.speedDownload, true),
                             BytesFormatter.humanReadable(
                                     task.additional.transfer.speedUpload, true),
                             EtaFormatter.calculateEta(
@@ -64,7 +64,7 @@ class DSTaskListTask(private val context: Activity) : AsyncTask<Call<DSTaskListB
                 debug_text_view.text = text
             } else {
                 val text = context.getString(
-                        SynologyDSTaskError.getMessageId(dsInfo.error!!.code))
+                        SynologyDSTaskError.getMessageId(dsInfo.error.code))
                 debug_text_view.text = text
             }
         }

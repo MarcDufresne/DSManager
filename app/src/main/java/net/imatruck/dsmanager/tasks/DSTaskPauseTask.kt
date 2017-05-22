@@ -39,7 +39,7 @@ class DSTaskPauseTask(private val context: Activity) : AsyncTask<Call<DSTaskPaus
                 val data = dsInfo.data
                 var text = ""
 
-                for (dsTaskPauseData in data!!) {
+                for (dsTaskPauseData in data) {
                     text += String.format(Locale.getDefault(),
                             "%s: %s\n",
                             dsTaskPauseData.id,
@@ -50,7 +50,7 @@ class DSTaskPauseTask(private val context: Activity) : AsyncTask<Call<DSTaskPaus
                 debugTextView.text = text
             } else {
                 val text = context.getString(
-                        SynologyDSTaskError.getMessageId(dsInfo.error!!.code))
+                        SynologyDSTaskError.getMessageId(dsInfo.error.code))
                 debugTextView.text = text
             }
         }

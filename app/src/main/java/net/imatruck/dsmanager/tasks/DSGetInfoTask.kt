@@ -36,12 +36,12 @@ class DSGetInfoTask(private val context: Activity) : AsyncTask<Call<DSGetInfoBas
 
             if (success) {
                 val infoData = dsInfo.data
-                var text = "Version: " + infoData!!.versionString!!
+                var text = "Version: " + infoData.versionString
                 text += "\nVersion ID: " + infoData.version
                 debug_text_view.text = text
             } else {
                 val text = context.getString(
-                        SynologyBaseError.getMessageId(dsInfo.error!!.code))
+                        SynologyBaseError.getMessageId(dsInfo.error.code))
                 debug_text_view.text = text
             }
         }

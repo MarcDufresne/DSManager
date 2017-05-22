@@ -173,7 +173,7 @@ object FileUtils {
 
         val extension = getExtension(file.name)
 
-        if (extension!!.length > 0)
+        if (extension!!.isNotEmpty())
             return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1))
 
         return "application/octet-stream"

@@ -39,7 +39,7 @@ class DSTaskCreateTask(private val context: Activity) : AsyncTask<Call<DSTaskCre
                 debugTextView.text = text
             } else {
                 val text = context.getString(
-                        SynologyDSTaskError.getMessageId(dsInfo.error!!.code))
+                        SynologyDSTaskError.getMessageId(dsInfo.error.code))
                 debugTextView.text = text
             }
         }

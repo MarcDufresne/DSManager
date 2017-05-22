@@ -11,9 +11,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-fun String.endsWith(char: Char) : Boolean = this[this.lastIndex] == char
-
-
 object SynologyAPIHelper {
 
     fun getSynologyApi(context: Context): SynologyAPI {
@@ -21,7 +18,7 @@ object SynologyAPIHelper {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         var server: String = prefs.getString(context.getString(R.string.pref_key_server), "")
 
-        if (server.endsWith('/')) {
+        if (!server.endsWith('/')) {
             server += "/"
         }
 

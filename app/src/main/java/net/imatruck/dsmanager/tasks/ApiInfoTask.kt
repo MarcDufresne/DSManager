@@ -31,7 +31,7 @@ class ApiInfoTask(private val context: Activity) : AsyncTask<Call<APIInfoBase>, 
     override fun onPostExecute(apiInfo: APIInfoBase?) {
         if (apiInfo != null) {
             var result = ""
-            for ((key, value) in apiInfo.data!!) {
+            for ((key, value) in apiInfo.data) {
                 result += key + ": " + value.path + "\n"
             }
             val debug_text_view = context.findViewById(R.id.debug_api_text) as TextView

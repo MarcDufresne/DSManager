@@ -127,7 +127,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             destination = defaultDestination;
         }
 
-        return RequestDSTaskCreate.INSTANCE.getCreateWithUriDestinationMap(
+        return RequestDSTaskCreate.getCreateWithUriDestinationMap(
                 sid, uri, destination);
 
     }
@@ -139,7 +139,7 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             destination = defaultDestination;
         }
 
-        return RequestDSTaskCreate.INSTANCE.getCreateWithFileDestination(destination);
+        return RequestDSTaskCreate.getCreateWithFileDestination(destination);
 
     }
 

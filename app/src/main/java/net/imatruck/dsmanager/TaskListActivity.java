@@ -38,6 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
+@SuppressWarnings("ALL")
 public class TaskListActivity extends AppCompatActivity implements TaskListOnClickListener {
 
     @BindView(R.id.task_list_view)
@@ -52,6 +53,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     TasksArrayAdapter adapter;
 
     String sidHeader;
+    String server;
 
     SynologyAPI synologyApi;
 
@@ -60,8 +62,14 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     Runnable mTaskRefresher = new Runnable() {
         @Override
         public void run() {
-            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
-            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
+            RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
+            refreshTasksTask.mTaskListActivity = TaskListActivity.this;
+            refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
+
+            GetStatsInfoTask getStatsInfoTask = new GetStatsInfoTask();
+            getStatsInfoTask.mTaskListActivity = TaskListActivity.this;
+            getStatsInfoTask.execute(synologyApi.dsStatsInfo(sidHeader));
+
             int interval = 3000;
             mHandler.postDelayed(mTaskRefresher, interval);
         }
@@ -98,10 +106,17 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
-
-        synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
+        server = prefs.getString(getString(R.string.pref_key_server), null);
 
         mHandler = new Handler();
+
+        if (server == null || server.isEmpty()) {
+            Snackbar.make(toolbar, "See Settings to configure your server's address",
+                    Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         if (sidHeader == null || sidHeader.isEmpty()) {
             String account = prefs.getString(getString(R.string.pref_key_account), null);
@@ -112,11 +127,19 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                         Snackbar.LENGTH_LONG).show();
                 stopPeriodicRefresh();
             } else {
-                new LoginTask().execute(synologyApi.authLogin(account, password));
+                LoginTask loginTask = new LoginTask();
+                loginTask.mTaskListActivity = this;
+                loginTask.execute(synologyApi.authLogin(account, password));
             }
         } else {
-            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
-            new GetStatsInfoTask().execute(synologyApi.dsStatsInfo(sidHeader));
+            RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
+            refreshTasksTask.mTaskListActivity = this;
+            refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
+
+            GetStatsInfoTask getStatsInfoTask = new GetStatsInfoTask();
+            getStatsInfoTask.mTaskListActivity = this;
+            getStatsInfoTask.execute(synologyApi.dsStatsInfo(sidHeader));
+
             startPeriodicRefresh();
         }
     }
@@ -140,7 +163,9 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
         if (id == R.id.action_refresh) {
             startPeriodicRefresh();
-            new RefreshTasks().execute(synologyApi.dsTaskList(sidHeader));
+            RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
+            refreshTasksTask.mTaskListActivity = this;
+            refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
         }
 
         if (id == R.id.action_server_config) {
@@ -190,7 +215,9 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         }
     }
 
-    private class RefreshTasks extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
+    private static class RefreshTasksTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
+
+        TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs
         @Override
@@ -212,34 +239,38 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                 if (dsTaskListBase.isSuccess()) {
                     List<Task> tasks = dsTaskListBase.getData().getTasks();
 
-                    LinearLayoutManager llm = (LinearLayoutManager) taskListView.getLayoutManager();
+                    LinearLayoutManager llm = (LinearLayoutManager) mTaskListActivity.taskListView.getLayoutManager();
                     int firstItem = llm.findFirstVisibleItemPosition();
                     View firstView = llm.findViewByPosition(firstItem);
                     float offsetTop = (firstView != null) ? firstView.getTop() : 0;
 
-                    adapter.clear();
-                    adapter.addAll(tasks);
+                    mTaskListActivity.adapter.clear();
+                    mTaskListActivity.adapter.addAll(tasks);
 
-                    adapter.notifyDataSetChanged();
+                    mTaskListActivity.adapter.notifyDataSetChanged();
 
-                    updateEmptyVisibility();
+                    mTaskListActivity.updateEmptyVisibility();
 
                     llm.scrollToPositionWithOffset(firstItem, (int) offsetTop);
                 } else {
-                    String text = getString(
+                    String text = mTaskListActivity.getString(
                             SynologyDSTaskError.Companion.getMessageId(dsTaskListBase.getError().getCode()));
-                    Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
-                    stopPeriodicRefresh();
+                    Snackbar.make(mTaskListActivity.fab, text, Snackbar.LENGTH_LONG).show();
+                    mTaskListActivity.stopPeriodicRefresh();
                 }
             } else {
-                String text = getString(R.string.synapi_error_1);
-                Snackbar.make(fab, text, Snackbar.LENGTH_LONG).show();
-                stopPeriodicRefresh();
+                String text = mTaskListActivity.getString(R.string.synapi_error_1);
+                Snackbar.make(mTaskListActivity.fab, text, Snackbar.LENGTH_LONG).show();
+                mTaskListActivity.stopPeriodicRefresh();
             }
+
+            mTaskListActivity = null;
         }
     }
 
-    private class GetStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSStatsInfoBase> {
+    private static class GetStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSStatsInfoBase> {
+
+        TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs
         @Override
@@ -262,15 +293,19 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                     String text = String.format(Locale.getDefault(), "↓ %s - ↑ %s",
                             BytesFormatter.INSTANCE.humanReadable(dsStatsInfoBase.getData().getSpeedDownload(), true),
                             BytesFormatter.INSTANCE.humanReadable(dsStatsInfoBase.getData().getSpeedUpload(), true));
-                    toolbar.setSubtitle(text);
+                    mTaskListActivity.toolbar.setSubtitle(text);
                 }
             } else {
-                toolbar.setSubtitle(null);
+                mTaskListActivity.toolbar.setSubtitle(null);
             }
+
+            mTaskListActivity = null;
         }
     }
 
-    private class LoginTask extends AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase> {
+    private static class LoginTask extends AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase> {
+
+        TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs
         @Override
@@ -293,22 +328,24 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                     String loginSid = authLoginBase.getSid();
 
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
-                            TaskListActivity.this);
+                            mTaskListActivity);
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString(getString(R.string.pref_key_sid), loginSid);
-                    editor.putString(getString(R.string.pref_key_sid_header), "id=" + loginSid);
+                    editor.putString(mTaskListActivity.getString(R.string.pref_key_sid), loginSid);
+                    editor.putString(mTaskListActivity.getString(R.string.pref_key_sid_header), "id=" + loginSid);
                     editor.apply();
 
-                    Snackbar.make(toolbar, "Logged-in", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mTaskListActivity.toolbar, "Logged-in", Snackbar.LENGTH_SHORT).show();
 
-                    startPeriodicRefresh();
+                    mTaskListActivity.startPeriodicRefresh();
                 } else {
-                    String error = getString(SynologyBaseError.Companion.getMessageId(
+                    String error = mTaskListActivity.getString(SynologyBaseError.Companion.getMessageId(
                             authLoginBase.getError().getCode()));
-                    Snackbar.make(toolbar, error, Snackbar.LENGTH_LONG);
-                    stopPeriodicRefresh();
+                    Snackbar.make(mTaskListActivity.toolbar, error, Snackbar.LENGTH_LONG);
+                    mTaskListActivity.stopPeriodicRefresh();
                 }
             }
+
+            mTaskListActivity = null;
         }
     }
 

@@ -114,7 +114,7 @@ public class DebugActivity extends AppCompatActivity {
                         break;
                     case 8: //  DS Task Create URI
                         new DSTaskCreateTask(DebugActivity.this).execute(synologyApi.dsTaskCreateUri(
-                                RequestDSTaskCreate.INSTANCE.getCreateWithURIMap(sid, editTextValue)));
+                                RequestDSTaskCreate.getCreateWithURIMap(sid, editTextValue)));
                         break;
                     case 9: // DS Task Create File
                         break;
