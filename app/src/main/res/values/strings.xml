@@ -126,4 +126,9 @@
     <string name="config_label_storage">Storage</string>
     <string name="config_hint_default_destination">Default Destination</string>
     <string name="config_hint_emule_default_destination">Emule Default Destination</string>
+    <string name="login_syno_url_hint">Synology API URL</string>
+    <string name="login_syno_username_hint">Username</string>
+    <string name="login_syno_password_hint">Password</string>
+    <string name="login_button_label">Login</string>
+    <string name="logo_content_description">logo</string>
 </resources>
