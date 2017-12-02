@@ -3,13 +3,10 @@ package net.imatruck.dsmanager.tasks
 import android.app.Activity
 import android.os.AsyncTask
 import android.widget.TextView
-
 import net.imatruck.dsmanager.R
 import net.imatruck.dsmanager.models.APIInfoBase
-
-import java.io.IOException
-
 import retrofit2.Call
+import java.io.IOException
 
 
 class ApiInfoTask(private val context: Activity) : AsyncTask<Call<APIInfoBase>, Void, APIInfoBase>() {
@@ -34,8 +31,8 @@ class ApiInfoTask(private val context: Activity) : AsyncTask<Call<APIInfoBase>, 
             for ((key, value) in apiInfo.data) {
                 result += key + ": " + value.path + "\n"
             }
-            val debug_text_view = context.findViewById(R.id.debug_api_text) as TextView
-            debug_text_view.text = result
+            val debugTextView = context.findViewById<TextView>(R.id.debug_api_text)
+            debugTextView.text = result
         }
     }
 }

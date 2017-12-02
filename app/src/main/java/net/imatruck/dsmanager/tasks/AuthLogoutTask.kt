@@ -5,13 +5,10 @@ import android.app.Activity
 import android.os.AsyncTask
 import android.preference.PreferenceManager
 import android.widget.TextView
-
 import net.imatruck.dsmanager.R
 import net.imatruck.dsmanager.models.AuthLogoutBase
-
-import java.io.IOException
-
 import retrofit2.Call
+import java.io.IOException
 
 
 class AuthLogoutTask(private val context: Activity) : AsyncTask<Call<AuthLogoutBase>, Void, AuthLogoutBase>() {
@@ -42,11 +39,11 @@ class AuthLogoutTask(private val context: Activity) : AsyncTask<Call<AuthLogoutB
                 editor.putString(context.getString(R.string.pref_key_sid_header), "")
                 editor.commit()
 
-                val debug_text_view_sid = context.findViewById(R.id.debug_api_sid) as TextView
-                debug_text_view_sid.text = ""
+                val debugTextViewSID = context.findViewById<TextView>(R.id.debug_api_sid)
+                debugTextViewSID.text = ""
             }
 
-            val debug_text_view = context.findViewById(R.id.debug_api_text) as TextView
+            val debug_text_view = context.findViewById<TextView>(R.id.debug_api_text)
             val text = "Logout: " + success.toString()
             debug_text_view.text = text
         }

@@ -4,14 +4,11 @@ import android.app.Activity
 import android.os.AsyncTask
 import android.preference.PreferenceManager
 import android.widget.TextView
-
 import net.imatruck.dsmanager.R
 import net.imatruck.dsmanager.models.AuthLoginBase
 import net.imatruck.dsmanager.utils.SynologyBaseError
-
-import java.io.IOException
-
 import retrofit2.Call
+import java.io.IOException
 
 
 class AuthLoginTask(private val context: Activity) : AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase>() {
@@ -39,7 +36,7 @@ class AuthLoginTask(private val context: Activity) : AsyncTask<Call<AuthLoginBas
                         SynologyBaseError.getMessageId(loginInfo.error.code))
             }
 
-            val debug_text_view = context.findViewById(R.id.debug_api_text) as TextView
+            val debugTextView = context.findViewById<TextView>(R.id.debug_api_text)
 
             if (success) {
                 val sid = loginInfo.sid
@@ -50,12 +47,12 @@ class AuthLoginTask(private val context: Activity) : AsyncTask<Call<AuthLoginBas
                 editor.putString(context.getString(R.string.pref_key_sid_header), "id=" + sid)
                 editor.apply()
 
-                val debug_text_view_sid = context.findViewById(R.id.debug_api_sid) as TextView
-                debug_text_view_sid.text = sid
+                val debugTextViewSID = context.findViewById<TextView>(R.id.debug_api_sid)
+                debugTextViewSID.text = sid
                 val text = "Login: Success"
-                debug_text_view.text = text
+                debugTextView.text = text
             } else {
-                debug_text_view.text = error_message
+                debugTextView.text = error_message
             }
         }
     }

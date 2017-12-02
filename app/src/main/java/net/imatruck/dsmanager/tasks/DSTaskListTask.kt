@@ -3,18 +3,15 @@ package net.imatruck.dsmanager.tasks
 import android.app.Activity
 import android.os.AsyncTask
 import android.widget.TextView
-
 import net.imatruck.dsmanager.R
 import net.imatruck.dsmanager.models.DSTaskListBase
 import net.imatruck.dsmanager.utils.BytesFormatter
 import net.imatruck.dsmanager.utils.EtaFormatter
 import net.imatruck.dsmanager.utils.PercentFormatter
 import net.imatruck.dsmanager.utils.SynologyDSTaskError
-
-import java.io.IOException
-import java.util.Locale
-
 import retrofit2.Call
+import java.io.IOException
+import java.util.*
 
 
 class DSTaskListTask(private val context: Activity) : AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase>() {
@@ -36,7 +33,7 @@ class DSTaskListTask(private val context: Activity) : AsyncTask<Call<DSTaskListB
     override fun onPostExecute(dsInfo: DSTaskListBase?) {
         if (dsInfo != null) {
             val success = dsInfo.isSuccess
-            val debug_text_view = context.findViewById(R.id.debug_api_text) as TextView
+            val debugTextView = context.findViewById<TextView>(R.id.debug_api_text)
 
             if (success) {
                 val infoData = dsInfo.data
@@ -61,11 +58,11 @@ class DSTaskListTask(private val context: Activity) : AsyncTask<Call<DSTaskListB
                                     task.additional.transfer.speedDownload)
                     )
                 }
-                debug_text_view.text = text
+                debugTextView.text = text
             } else {
                 val text = context.getString(
                         SynologyDSTaskError.getMessageId(dsInfo.error.code))
-                debug_text_view.text = text
+                debugTextView.text = text
             }
         }
     }

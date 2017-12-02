@@ -22,7 +22,7 @@ class EditTaskDialog : AppCompatDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val defaultMargin = activity.resources.getDimension(R.dimen.dialog_margin)
+        val defaultMargin = activity!!.resources.getDimension(R.dimen.dialog_margin)
 
         val container = LinearLayoutCompat(activity)
         val containerParams = LinearLayoutCompat.LayoutParams(
@@ -40,7 +40,7 @@ class EditTaskDialog : AppCompatDialogFragment() {
 
         container.addView(newDestinationEditText)
 
-        val builder = AlertDialog.Builder(activity)
+        val builder = AlertDialog.Builder(activity!!)
 
         builder.setTitle(R.string.edit_task_dialog_title)
                 .setMessage(R.string.edit_task_dialog_message)

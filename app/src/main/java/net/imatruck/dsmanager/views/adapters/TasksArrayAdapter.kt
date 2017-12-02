@@ -77,12 +77,12 @@ class TasksArrayAdapter(private val context: Context, private val tasks: Mutable
         get() = tasks.isEmpty()
 
     class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        internal var titleText: TextView = itemView.findViewById(R.id.row_task_title) as TextView
-        internal var statusText: TextView = itemView.findViewById(R.id.row_task_status) as TextView
-        internal var progressBar: ProgressBar = itemView.findViewById(R.id.row_task_progress_bar) as ProgressBar
-        internal var progressText: TextView = itemView.findViewById(R.id.row_task_progress_text) as TextView
-        internal var labelLeftText: TextView = itemView.findViewById(R.id.row_task_left_label) as TextView
-        internal var labelRightText: TextView = itemView.findViewById(R.id.row_task_right_label) as TextView
+        internal var titleText: TextView = itemView.findViewById(R.id.row_task_title)
+        internal var statusText: TextView = itemView.findViewById(R.id.row_task_status)
+        internal var progressBar: ProgressBar = itemView.findViewById(R.id.row_task_progress_bar)
+        internal var progressText: TextView = itemView.findViewById(R.id.row_task_progress_text)
+        internal var labelLeftText: TextView = itemView.findViewById(R.id.row_task_left_label)
+        internal var labelRightText: TextView = itemView.findViewById(R.id.row_task_right_label)
 
         init {
             itemView.setOnClickListener(this)
