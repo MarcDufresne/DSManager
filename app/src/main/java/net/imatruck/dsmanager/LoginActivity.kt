@@ -29,6 +29,14 @@ class LoginActivity : AppCompatActivity() {
 
         val storedUsername = prefs.getString(getString(R.string.pref_key_account), "")
         val storedApiURL = prefs.getString(getString(R.string.pref_key_server), "")
+        val storedSid = prefs.getString(getString(R.string.pref_key_sid), "")
+
+        if (storedSid != "") {
+            finish()
+            val intent = Intent(this, TaskListActivity::class.java)
+            startActivity(intent)
+            return
+        }
 
         editLoginURL.setText(storedApiURL)
         editLoginUser.setText(storedUsername)

@@ -119,18 +119,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
         if (sidHeader == null || sidHeader.isEmpty()) {
-            String account = prefs.getString(getString(R.string.pref_key_account), null);
-            String password = prefs.getString(getString(R.string.pref_key_password), null);
 
-            if (account == null || password == null || account.isEmpty() || password.isEmpty()) {
-                Snackbar.make(toolbar, "Missing credentials, see Settings",
-                        Snackbar.LENGTH_LONG).show();
-                stopPeriodicRefresh();
-            } else {
-                LoginTask loginTask = new LoginTask();
-                loginTask.mTaskListActivity = this;
-                loginTask.execute(synologyApi.authLogin(account, password));
-            }
         } else {
             RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
             refreshTasksTask.mTaskListActivity = this;
