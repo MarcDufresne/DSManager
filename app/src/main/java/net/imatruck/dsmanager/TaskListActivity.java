@@ -16,15 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import net.imatruck.dsmanager.models.AuthLoginBase;
 import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
 import net.imatruck.dsmanager.utils.BytesFormatter;
-import net.imatruck.dsmanager.utils.SynologyBaseError;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 import net.imatruck.dsmanager.views.adapters.TaskListOnClickListener;
 import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
@@ -105,32 +104,40 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         updateEmptyVisibility();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), null);
-        server = prefs.getString(getString(R.string.pref_key_server), null);
+        sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), "");
+        server = prefs.getString(getString(R.string.pref_key_server), "");
 
         mHandler = new Handler();
 
-        if (server == null || server.isEmpty()) {
-            Snackbar.make(toolbar, "See Settings to configure your server's address",
-                    Snackbar.LENGTH_LONG).show();
+        if (server.isEmpty() || sidHeader.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    "No server is configured or login token is invalid, please login again.",
+                    Toast.LENGTH_LONG).show();
+            clearStoredSid();
+            startLoginActivity();
             return;
         }
 
         synologyApi = SynologyAPIHelper.INSTANCE.getSynologyApi(this);
 
-        if (sidHeader == null || sidHeader.isEmpty()) {
+        RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
+        refreshTasksTask.mTaskListActivity = this;
+        refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
 
-        } else {
-            RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
-            refreshTasksTask.mTaskListActivity = this;
-            refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
+        GetStatsInfoTask getStatsInfoTask = new GetStatsInfoTask();
+        getStatsInfoTask.mTaskListActivity = this;
+        getStatsInfoTask.execute(synologyApi.dsStatsInfo(sidHeader));
 
-            GetStatsInfoTask getStatsInfoTask = new GetStatsInfoTask();
-            getStatsInfoTask.mTaskListActivity = this;
-            getStatsInfoTask.execute(synologyApi.dsStatsInfo(sidHeader));
+        startPeriodicRefresh();
+    }
 
-            startPeriodicRefresh();
-        }
+    private void clearStoredSid() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.pref_key_sid), "");
+        editor.putString(getString(R.string.pref_key_sid_header), "");
+        editor.apply();
     }
 
     @Override
@@ -173,6 +180,12 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startLoginActivity() {
+        finish();
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
     }
 
     private void startPeriodicRefresh() {
@@ -246,6 +259,12 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                             SynologyDSTaskError.Companion.getMessageId(dsTaskListBase.getError().getCode()));
                     Snackbar.make(mTaskListActivity.fab, text, Snackbar.LENGTH_LONG).show();
                     mTaskListActivity.stopPeriodicRefresh();
+                    if (dsTaskListBase.getError().getCode() >= 100 &&
+                            dsTaskListBase.getError().getCode() < 200) {
+                        mTaskListActivity.clearStoredSid();
+                        mTaskListActivity.startLoginActivity();
+                    }
+
                 }
             } else {
                 String text = mTaskListActivity.getString(R.string.synapi_error_1);
@@ -286,52 +305,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                 }
             } else {
                 mTaskListActivity.toolbar.setSubtitle(null);
-            }
-
-            mTaskListActivity = null;
-        }
-    }
-
-    private static class LoginTask extends AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase> {
-
-        TaskListActivity mTaskListActivity = null;
-
-        @SafeVarargs
-        @Override
-        protected final AuthLoginBase doInBackground(Call<AuthLoginBase>... calls) {
-            AuthLoginBase authLoginBase;
-            try {
-                authLoginBase = calls[0].execute().body();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            return authLoginBase;
-        }
-
-        @Override
-        protected void onPostExecute(AuthLoginBase authLoginBase) {
-            if (authLoginBase != null) {
-                if (authLoginBase.isSuccess()) {
-                    String loginSid = authLoginBase.getSid();
-
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
-                            mTaskListActivity);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putString(mTaskListActivity.getString(R.string.pref_key_sid), loginSid);
-                    editor.putString(mTaskListActivity.getString(R.string.pref_key_sid_header), "id=" + loginSid);
-                    editor.apply();
-
-                    Snackbar.make(mTaskListActivity.toolbar, "Logged-in", Snackbar.LENGTH_SHORT).show();
-
-                    mTaskListActivity.startPeriodicRefresh();
-                } else {
-                    String error = mTaskListActivity.getString(SynologyBaseError.Companion.getMessageId(
-                            authLoginBase.getError().getCode()));
-                    Snackbar.make(mTaskListActivity.toolbar, error, Snackbar.LENGTH_LONG);
-                    mTaskListActivity.stopPeriodicRefresh();
-                }
             }
 
             mTaskListActivity = null;

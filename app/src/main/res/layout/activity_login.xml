@@ -81,7 +81,8 @@
             android:inputType="textNoSuggestions"
             android:selectAllOnFocus="false"
             android:singleLine="true"
-            tools:text="myUsername" />
+            tools:text="myUsername"
+            android:autofillHints="username"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -105,7 +106,8 @@
             android:inputType="textWebPassword"
             android:selectAllOnFocus="false"
             android:singleLine="true"
-            tools:text="password_here" />
+            tools:text="password_here"
+            android:autofillHints="password" />
     </android.support.design.widget.TextInputLayout>
 
     <Button

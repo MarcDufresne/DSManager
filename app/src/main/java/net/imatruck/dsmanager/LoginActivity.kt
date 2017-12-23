@@ -19,12 +19,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        /**
-         * - Maybe receive something that says login is expired
-         * - If Login expired or not logged-in, pre-fill what we can, wait for login
-         * - If logged-in and nothing says it's expired, redirect to TaskList
-         */
-
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
         val storedUsername = prefs.getString(getString(R.string.pref_key_account), "")
