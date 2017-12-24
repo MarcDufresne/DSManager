@@ -53,18 +53,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                         : null);
 
                     } else {
-                        // For all other preferences, set the summary to the value's
-                        // simple string representation.
-                        if (preference.getKey().equals(
-                                preference.getContext().getString(R.string.pref_key_password))) {
-                            if (stringValue.length() > 0) {
-                                preference.setSummary("******");
-                            } else {
-                                preference.setSummary("");
-                            }
-                        } else {
-                            preference.setSummary(stringValue);
-                        }
+                        preference.setSummary(stringValue);
                     }
                     return true;
                 }
@@ -171,10 +160,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_server)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_account)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_password)));
-            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_key_default_destination)));
+            bindPreferenceSummaryToValue(
+                    findPreference(getString(R.string.pref_key_default_destination)));
         }
 
         @Override

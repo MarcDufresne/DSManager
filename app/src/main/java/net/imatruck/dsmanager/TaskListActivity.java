@@ -132,14 +132,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         startPeriodicRefresh();
     }
 
-    private void clearStoredSid() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(getString(R.string.pref_key_sid), "");
-        editor.putString(getString(R.string.pref_key_sid_header), "");
-        editor.apply();
-    }
-
     @Override
     protected void onPause() {
         stopPeriodicRefresh();
@@ -174,12 +166,25 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
             startActivity(settingsIntent);
         }
 
+        if (id == R.id.action_logout) {
+            clearStoredSid();
+            startLoginActivity();
+        }
+
         if (id == R.id.action_debug) {
             Intent debugIntent = new Intent(this, DebugActivity.class);
             startActivity(debugIntent);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void clearStoredSid() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.pref_key_sid), "");
+        editor.putString(getString(R.string.pref_key_sid_header), "");
+        editor.apply();
     }
 
     private void startLoginActivity() {
