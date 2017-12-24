@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "25612481348",
+    "firebase_url": "https://dsmanager-f6a31.firebaseio.com",
+    "project_id": "dsmanager-f6a31",
+    "storage_bucket": "dsmanager-f6a31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25612481348:android:16627a0142442ef4",
+        "android_client_info": {
+          "package_name": "net.imatruck.dsmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25612481348-pcl9fsvuurog6g7gbthig3b7jt8lluo3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfV39yn2nEoAFHnrGC9qjBtG2PFcMmapc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
