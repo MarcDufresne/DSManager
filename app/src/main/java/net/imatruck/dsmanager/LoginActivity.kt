@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.webkit.URLUtil
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import net.imatruck.dsmanager.models.AuthLoginBase
@@ -37,19 +38,28 @@ class LoginActivity : AppCompatActivity() {
 
         button.setOnClickListener {
 
-            val editor = prefs.edit()
-            editor.putString(getString(R.string.pref_key_server), editLoginURL.text.toString())
-            editor.putString(getString(R.string.pref_key_account), editLoginUser.text.toString())
-            editor.apply()
+            val url = editLoginURL.text.toString()
 
-            val synologyAPI = SynologyAPIHelper.getSynologyApi(this)
+            if (!URLUtil.isValidUrl(url)) {
+                Toast.makeText(
+                        this, "API URL is invalid, please enter a valid value.",
+                        Toast.LENGTH_SHORT).show()
 
-            val authLoginCall = synologyAPI.authLogin(
-                    editLoginUser.text.toString(), editLoginPass.text.toString())
+            } else {
+                val editor = prefs.edit()
+                editor.putString(getString(R.string.pref_key_server), url)
+                editor.putString(getString(R.string.pref_key_account), editLoginUser.text.toString())
+                editor.apply()
 
-            val loginTask = LoginTask()
-            loginTask.mLoginActivity = this
-            loginTask.execute(authLoginCall)
+                val synologyAPI = SynologyAPIHelper.getSynologyApi(this)
+
+                val authLoginCall = synologyAPI.authLogin(
+                        editLoginUser.text.toString(), editLoginPass.text.toString())
+
+                val loginTask = LoginTask()
+                loginTask.mLoginActivity = this
+                loginTask.execute(authLoginCall)
+            }
         }
     }
 
