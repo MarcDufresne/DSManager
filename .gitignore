@@ -75,3 +75,6 @@ proguard/
 captures/
 
 *.jks
+
+app/release/
+
