@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
@@ -52,6 +53,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     TasksArrayAdapter adapter;
 
     String sidHeader;
+    String sid;
     String server;
 
     SynologyAPI synologyApi;
@@ -105,6 +107,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         sidHeader = prefs.getString(getString(R.string.pref_key_sid_header), "");
+        sid = prefs.getString(getString(R.string.pref_key_sid), "");
         server = prefs.getString(getString(R.string.pref_key_server), "");
 
         mHandler = new Handler();
@@ -112,7 +115,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         if (server.isEmpty() || sidHeader.isEmpty()) {
             Toast.makeText(
                     this,
-                    "No server is configured or login token is invalid, please login again.",
+                    getString(R.string.task_list_invalid_server_config),
                     Toast.LENGTH_LONG).show();
             clearStoredSid();
             startLoginActivity();
@@ -167,8 +170,9 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         }
 
         if (id == R.id.action_logout) {
-            clearStoredSid();
-            startLoginActivity();
+            LogoutTask logoutTask = new LogoutTask();
+            logoutTask.mTaskListActivity = this;
+            logoutTask.execute(synologyApi.authLogout(sid));
         }
 
         if (id == R.id.action_debug) {
@@ -312,6 +316,32 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                 mTaskListActivity.toolbar.setSubtitle(null);
             }
 
+            mTaskListActivity = null;
+        }
+    }
+
+    private static class LogoutTask extends AsyncTask<Call<AuthLogoutBase>, Void, AuthLogoutBase> {
+
+        TaskListActivity mTaskListActivity = null;
+
+        @SafeVarargs
+        @Override
+        protected final AuthLogoutBase doInBackground(Call<AuthLogoutBase>... calls) {
+            AuthLogoutBase authLogoutBase;
+            try {
+                authLogoutBase = calls[0].execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            return authLogoutBase;
+        }
+
+        @Override
+        protected void onPostExecute(AuthLogoutBase authLogoutBase) {
+            mTaskListActivity.clearStoredSid();
+            mTaskListActivity.startLoginActivity();
             mTaskListActivity = null;
         }
     }
