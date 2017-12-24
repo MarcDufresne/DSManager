@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         val storedApiURL = prefs.getString(getString(R.string.pref_key_server), "")
         val storedSid = prefs.getString(getString(R.string.pref_key_sid), "")
 
-        if (storedSid != "") {
+        if (storedSid.isNotEmpty()) {
             finish()
             val intent = Intent(this, TaskListActivity::class.java)
             startActivity(intent)
@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (!URLUtil.isValidUrl(url)) {
                 Toast.makeText(
-                        this, "API URL is invalid, please enter a valid value.",
+                        this, getString(R.string.login_invalid_url),
                         Toast.LENGTH_SHORT).show()
 
             } else {

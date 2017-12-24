@@ -137,4 +137,5 @@
     <string name="login_syno_password_hint">Password</string>
     <string name="login_button_label">Login</string>
     <string name="logo_content_description">logo</string>
+    <string name="login_invalid_url">API URL is invalid, please enter a valid value.</string>
 </resources>
