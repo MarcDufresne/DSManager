@@ -144,6 +144,10 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        if (!BuildConfig.DEBUG) {
+            MenuItem debugMenuItem = menu.findItem(R.id.action_debug);
+            debugMenuItem.setVisible(false);
+        }
         return true;
     }
 

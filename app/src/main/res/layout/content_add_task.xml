@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/add_radio_label_uri"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5" />
 
         <RadioButton
             android:id="@+id/radio_file"
