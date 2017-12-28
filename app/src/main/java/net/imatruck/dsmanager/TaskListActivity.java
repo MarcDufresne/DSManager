@@ -22,15 +22,19 @@ import net.imatruck.dsmanager.models.AuthLogoutBase;
 import net.imatruck.dsmanager.models.DSStatsInfoBase;
 import net.imatruck.dsmanager.models.DSTaskListBase;
 import net.imatruck.dsmanager.models.Task;
+import net.imatruck.dsmanager.models.TaskAdditionalTransfer;
 import net.imatruck.dsmanager.network.SynologyAPI;
 import net.imatruck.dsmanager.network.SynologyAPIHelper;
 import net.imatruck.dsmanager.utils.BytesFormatter;
+import net.imatruck.dsmanager.utils.PercentFormatter;
 import net.imatruck.dsmanager.utils.SynologyDSTaskError;
 import net.imatruck.dsmanager.views.adapters.TaskListOnClickListener;
 import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,6 +59,13 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     String sidHeader;
     String sid;
     String server;
+
+    enum SortType {
+        DEFAULT, PERCENT, NAME, DL_SPEED, UL_SPEED
+    }
+
+    boolean sortAsc = true;
+    SortType sortType = SortType.DEFAULT;
 
     SynologyAPI synologyApi;
 
@@ -153,35 +164,75 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if (id == R.id.action_refresh) {
-            startPeriodicRefresh();
-            RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
-            refreshTasksTask.mTaskListActivity = this;
-            refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
-        }
-
-        if (id == R.id.action_server_config) {
-            Intent serverConfigIntent = new Intent(this, ServerConfigActivity.class);
-            startActivity(serverConfigIntent);
-        }
-
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-        }
-
-        if (id == R.id.action_logout) {
-            LogoutTask logoutTask = new LogoutTask();
-            logoutTask.mTaskListActivity = this;
-            logoutTask.execute(synologyApi.authLogout(sid));
-        }
-
-        if (id == R.id.action_debug) {
-            Intent debugIntent = new Intent(this, DebugActivity.class);
-            startActivity(debugIntent);
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                startPeriodicRefresh();
+                RefreshTasksTask refreshTasksTask = new RefreshTasksTask();
+                refreshTasksTask.mTaskListActivity = this;
+                refreshTasksTask.execute(synologyApi.dsTaskList(sidHeader));
+                break;
+            case R.id.action_server_config:
+                Intent serverConfigIntent = new Intent(this, ServerConfigActivity.class);
+                startActivity(serverConfigIntent);
+                break;
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
+            case R.id.action_logout:
+                LogoutTask logoutTask = new LogoutTask();
+                logoutTask.mTaskListActivity = this;
+                logoutTask.execute(synologyApi.authLogout(sid));
+                break;
+            case R.id.action_debug:
+                Intent debugIntent = new Intent(this, DebugActivity.class);
+                startActivity(debugIntent);
+                break;
+            case R.id.action_sort_percent_asc:
+                item.setChecked(true);
+                sortAsc = true;
+                sortType = SortType.PERCENT;
+                break;
+            case R.id.action_sort_percent_desc:
+                item.setChecked(true);
+                sortAsc = false;
+                sortType = SortType.PERCENT;
+                break;
+            case R.id.action_sort_name_asc:
+                item.setChecked(true);
+                sortAsc = true;
+                sortType = SortType.NAME;
+                break;
+            case R.id.action_sort_name_desc:
+                item.setChecked(true);
+                sortAsc = false;
+                sortType = SortType.NAME;
+                break;
+            case R.id.action_sort_dl_speed_asc:
+                item.setChecked(true);
+                sortAsc = true;
+                sortType = SortType.DL_SPEED;
+                break;
+            case R.id.action_sort_dl_speed_desc:
+                item.setChecked(true);
+                sortAsc = false;
+                sortType = SortType.DL_SPEED;
+                break;
+            case R.id.action_sort_ul_speed_asc:
+                item.setChecked(true);
+                sortAsc = true;
+                sortType = SortType.UL_SPEED;
+                break;
+            case R.id.action_sort_ul_speed_desc:
+                item.setChecked(true);
+                sortAsc = false;
+                sortType = SortType.UL_SPEED;
+                break;
+            case R.id.action_sort_default:
+                item.setChecked(true);
+                sortAsc = true;
+                sortType = SortType.DEFAULT;
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -220,6 +271,75 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
         }
     }
 
+    private void sortTasksByPercent(List<Task> tasks, final boolean asc) {
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task t1, Task t2) {
+                TaskAdditionalTransfer transfer1 = t1.getAdditional().getTransfer();
+                double sizeDownloaded1 = transfer1.getSizeDownloaded();
+                double size1 = t1.getSize();
+                int percentDone1 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded1, size1);
+
+                TaskAdditionalTransfer transfer2 = t2.getAdditional().getTransfer();
+                double sizeDownloaded2 = transfer2.getSizeDownloaded();
+                double size2 = t2.getSize();
+                int percentDone2 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded2, size2);
+
+                if (percentDone1 < percentDone2)
+                    return asc ? -1 : 1;
+                else if (percentDone1 > percentDone2)
+                    return asc ? 1 : -1;
+                return 0;
+            }
+        });
+    }
+
+    private void sortTasksByDlSpeed(List<Task> tasks, final boolean asc) {
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task t1, Task t2) {
+                double speed1 = t1.getAdditional().getTransfer().getSpeedDownload();
+                double speed2 = t2.getAdditional().getTransfer().getSpeedDownload();
+
+                if (speed1 < speed2)
+                    return asc ? -1 : 1;
+                else if (speed1 > speed2)
+                    return asc ? 1 : -1;
+                return 0;
+            }
+        });
+    }
+
+    private void sortTasksByUlSpeed(List<Task> tasks, final boolean asc) {
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task t1, Task t2) {
+                double speed1 = t1.getAdditional().getTransfer().getSpeedUpload();
+                double speed2 = t2.getAdditional().getTransfer().getSpeedUpload();
+
+                if (speed1 < speed2)
+                    return asc ? -1 : 1;
+                else if (speed1 > speed2)
+                    return asc ? 1 : -1;
+                return 0;
+            }
+        });
+    }
+
+    private void sortTasksByName(List<Task> tasks, final boolean asc) {
+        Collections.sort(tasks, new Comparator<Task>() {
+            @Override
+            public int compare(Task t1, Task t2) {
+                String name1 = t1.getTitle();
+                String name2 = t2.getTitle();
+                if (asc)
+                    return name1.compareTo(name2);
+                else
+                    return name2.compareTo(name1);
+            }
+        });
+    }
+
     @Override
     public void onItemClick(int position) {
         Task task = adapter.getTask(position);
@@ -253,6 +373,24 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
             if (dsTaskListBase != null) {
                 if (dsTaskListBase.isSuccess()) {
                     List<Task> tasks = dsTaskListBase.getData().getTasks();
+
+                    SortType sortType = mTaskListActivity.sortType;
+                    boolean sortAsc = mTaskListActivity.sortAsc;
+
+                    switch (sortType) {
+                        case PERCENT:
+                            mTaskListActivity.sortTasksByPercent(tasks, sortAsc);
+                            break;
+                        case NAME:
+                            mTaskListActivity.sortTasksByName(tasks, sortAsc);
+                            break;
+                        case DL_SPEED:
+                            mTaskListActivity.sortTasksByDlSpeed(tasks, sortAsc);
+                            break;
+                        case UL_SPEED:
+                            mTaskListActivity.sortTasksByUlSpeed(tasks, sortAsc);
+                            break;
+                    }
 
                     LinearLayoutManager llm = (LinearLayoutManager) mTaskListActivity.taskListView.getLayoutManager();
                     int firstItem = llm.findFirstVisibleItemPosition();

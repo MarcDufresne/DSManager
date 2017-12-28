@@ -11,6 +11,48 @@
         android:icon="@drawable/ic_autorenew_white_24dp" />
 
     <item
+        android:id="@+id/action_sort"
+        android:orderInCategory="30"
+        android:title="@string/action_sort"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_sort_white_24px">
+        <menu>
+            <group
+                android:id="@+id/action_group_sort"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_sort_name_asc"
+                    android:title="@string/action_sort_name_asc"/>
+                <item
+                    android:id="@+id/action_sort_name_desc"
+                    android:title="@string/action_sort_name_desc"/>
+                <item
+                    android:id="@+id/action_sort_percent_asc"
+                    android:title="@string/action_sort_percent_asc"/>
+                <item
+                    android:id="@+id/action_sort_percent_desc"
+                    android:title="@string/action_sort_percent_desc"/>
+                <item
+                    android:id="@+id/action_sort_dl_speed_asc"
+                    android:title="@string/action_sort_dl_speed_asc"/>
+                <item
+                    android:id="@+id/action_sort_dl_speed_desc"
+                    android:title="@string/action_sort_dl_speed_desc"/>
+                <item
+                    android:id="@+id/action_sort_ul_speed_asc"
+                    android:title="@string/action_sort_ul_speed_asc"/>
+                <item
+                    android:id="@+id/action_sort_ul_speed_desc"
+                    android:title="@string/action_sort_ul_speed_desc"/>
+                <item
+                    android:id="@+id/action_sort_default"
+                    android:title="@string/action_sort_default"
+                    android:checked="true"/>
+            </group>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/action_server_config"
         android:orderInCategory="40"
         android:title="@string/action_server_config"

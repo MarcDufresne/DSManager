@@ -14,6 +14,17 @@
     <string name="action_debug">Debug</string>
     <string name="action_logout">Logout</string>
     <string name="action_refresh">Refresh</string>
+    <string name="action_sort">Sort</string>
+
+    <string name="action_sort_name_asc">Name ASC</string>
+    <string name="action_sort_name_desc">Name DESC</string>
+    <string name="action_sort_percent_asc">Percent ASC</string>
+    <string name="action_sort_percent_desc">Percent DESC</string>
+    <string name="action_sort_dl_speed_asc">DL Speed ASC</string>
+    <string name="action_sort_dl_speed_desc">DL Speed DESC</string>
+    <string name="action_sort_ul_speed_asc">UL Speed ASC</string>
+    <string name="action_sort_ul_speed_desc">UL Speed DESC</string>
+    <string name="action_sort_default">Default</string>
 
     <string name="debug_api_button">Test</string>
     <string-array name="debug_api_choices">
@@ -132,6 +143,7 @@
     <string name="config_label_storage">Storage</string>
     <string name="config_hint_default_destination">Default Destination</string>
     <string name="config_hint_emule_default_destination">Emule Default Destination</string>
+
     <string name="login_syno_url_hint">Synology API URL</string>
     <string name="login_syno_username_hint">Username</string>
     <string name="login_syno_password_hint">Password</string>
