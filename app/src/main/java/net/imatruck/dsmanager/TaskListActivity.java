@@ -67,6 +67,12 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     boolean sortAsc = true;
     SortType sortType = SortType.DEFAULT;
 
+    enum Filter {
+        NONE, BT, HTTP, NZB, FTP, EMULE
+    }
+
+    Filter filter = Filter.NONE;
+
     SynologyAPI synologyApi;
 
     private Handler mHandler;
@@ -233,6 +239,30 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                 sortAsc = true;
                 sortType = SortType.DEFAULT;
                 break;
+            case R.id.action_filter_none:
+                item.setChecked(true);
+                filter = Filter.NONE;
+                break;
+            case R.id.action_filter_bt:
+                item.setChecked(true);
+                filter = Filter.BT;
+                break;
+            case R.id.action_filter_emule:
+                item.setChecked(true);
+                filter = Filter.EMULE;
+                break;
+            case R.id.action_filter_ftp:
+                item.setChecked(true);
+                filter = Filter.FTP;
+                break;
+            case R.id.action_filter_http:
+                item.setChecked(true);
+                filter = Filter.HTTP;
+                break;
+            case R.id.action_filter_nzb:
+                item.setChecked(true);
+                filter = Filter.NZB;
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -376,6 +406,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
                     SortType sortType = mTaskListActivity.sortType;
                     boolean sortAsc = mTaskListActivity.sortAsc;
+                    Filter filter = mTaskListActivity.filter;
 
                     switch (sortType) {
                         case PERCENT:
@@ -389,6 +420,24 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                             break;
                         case UL_SPEED:
                             mTaskListActivity.sortTasksByUlSpeed(tasks, sortAsc);
+                            break;
+                    }
+
+                    switch (filter) {
+                        case BT:
+                            tasks.removeIf(task -> !task.getType().toLowerCase().equals("bt"));
+                            break;
+                        case HTTP:
+                            tasks.removeIf(task -> !task.getType().toLowerCase().equals("http"));
+                            break;
+                        case FTP:
+                            tasks.removeIf(task -> !task.getType().toLowerCase().equals("ftp"));
+                            break;
+                        case NZB:
+                            tasks.removeIf(task -> !task.getType().toLowerCase().equals("nzb"));
+                            break;
+                        case EMULE:
+                            tasks.removeIf(task -> !task.getType().toLowerCase().equals("emule"));
                             break;
                     }
 

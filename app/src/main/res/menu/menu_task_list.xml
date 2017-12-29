@@ -53,6 +53,39 @@
     </item>
 
     <item
+        android:id="@+id/action_filter"
+        android:orderInCategory="35"
+        android:title="@string/action_filter"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_filter_list_white_24dp">
+        <menu>
+            <group
+                android:id="@+id/action_group_filter"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_filter_bt"
+                    android:title="@string/action_filter_bt"/>
+                <item
+                    android:id="@+id/action_filter_nzb"
+                    android:title="@string/action_filter_nzb"/>
+                <item
+                    android:id="@+id/action_filter_http"
+                    android:title="@string/action_filter_http"/>
+                <item
+                    android:id="@+id/action_filter_ftp"
+                    android:title="@string/action_filter_ftp"/>
+                <item
+                    android:id="@+id/action_filter_emule"
+                    android:title="@string/action_filter_emule"/>
+                <item
+                    android:id="@+id/action_filter_none"
+                    android:title="@string/action_filter_none"
+                    android:checked="true"/>
+            </group>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/action_server_config"
         android:orderInCategory="40"
         android:title="@string/action_server_config"
