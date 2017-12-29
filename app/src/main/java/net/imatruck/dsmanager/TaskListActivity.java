@@ -34,8 +34,6 @@ import net.imatruck.dsmanager.views.adapters.TasksArrayAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -102,18 +100,15 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
         setSupportActionBar(toolbar);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent addTaskIntent = new Intent(TaskListActivity.this, AddTaskActivity.class);
-                startActivity(addTaskIntent);
-            }
+        fab.setOnClickListener(view -> {
+            Intent addTaskIntent = new Intent(TaskListActivity.this, AddTaskActivity.class);
+            startActivity(addTaskIntent);
         });
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         taskListView.setLayoutManager(layoutManager);
 
-        adapter = new TasksArrayAdapter(this, new ArrayList<Task>(), this);
+        adapter = new TasksArrayAdapter(this, new ArrayList<>(), this);
         taskListView.setAdapter(adapter);
     }
 
@@ -303,82 +298,68 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
     }
 
     private void sortTasksByPercent(List<Task> tasks, final boolean asc) {
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task t1, Task t2) {
-                TaskAdditionalTransfer transfer1 = t1.getAdditional().getTransfer();
-                double sizeDownloaded1 = transfer1.getSizeDownloaded();
-                double size1 = t1.getSize();
-                int percentDone1 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded1, size1);
+        tasks.sort((t1, t2) -> {
+            TaskAdditionalTransfer transfer1 = t1.getAdditional().getTransfer();
+            double sizeDownloaded1 = transfer1.getSizeDownloaded();
+            double size1 = t1.getSize();
+            int percentDone1 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded1, size1);
 
-                TaskAdditionalTransfer transfer2 = t2.getAdditional().getTransfer();
-                double sizeDownloaded2 = transfer2.getSizeDownloaded();
-                double size2 = t2.getSize();
-                int percentDone2 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded2, size2);
+            TaskAdditionalTransfer transfer2 = t2.getAdditional().getTransfer();
+            double sizeDownloaded2 = transfer2.getSizeDownloaded();
+            double size2 = t2.getSize();
+            int percentDone2 = (int) PercentFormatter.INSTANCE.toPercent(sizeDownloaded2, size2);
 
-                if (percentDone1 < percentDone2)
-                    return asc ? -1 : 1;
-                else if (percentDone1 > percentDone2)
-                    return asc ? 1 : -1;
-                return 0;
-            }
+            if (percentDone1 < percentDone2)
+                return asc ? -1 : 1;
+            else if (percentDone1 > percentDone2)
+                return asc ? 1 : -1;
+            return 0;
         });
     }
 
     private void sortTasksByDlSpeed(List<Task> tasks, final boolean asc) {
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task t1, Task t2) {
-                double speed1 = t1.getAdditional().getTransfer().getSpeedDownload();
-                double speed2 = t2.getAdditional().getTransfer().getSpeedDownload();
+        tasks.sort((t1, t2) -> {
+            double speed1 = t1.getAdditional().getTransfer().getSpeedDownload();
+            double speed2 = t2.getAdditional().getTransfer().getSpeedDownload();
 
-                if (speed1 < speed2)
-                    return asc ? -1 : 1;
-                else if (speed1 > speed2)
-                    return asc ? 1 : -1;
-                return 0;
-            }
+            if (speed1 < speed2)
+                return asc ? -1 : 1;
+            else if (speed1 > speed2)
+                return asc ? 1 : -1;
+            return 0;
         });
     }
 
     private void sortTasksByUlSpeed(List<Task> tasks, final boolean asc) {
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task t1, Task t2) {
-                double speed1 = t1.getAdditional().getTransfer().getSpeedUpload();
-                double speed2 = t2.getAdditional().getTransfer().getSpeedUpload();
+        tasks.sort((t1, t2) -> {
+            double speed1 = t1.getAdditional().getTransfer().getSpeedUpload();
+            double speed2 = t2.getAdditional().getTransfer().getSpeedUpload();
 
-                if (speed1 < speed2)
-                    return asc ? -1 : 1;
-                else if (speed1 > speed2)
-                    return asc ? 1 : -1;
-                return 0;
-            }
+            if (speed1 < speed2)
+                return asc ? -1 : 1;
+            else if (speed1 > speed2)
+                return asc ? 1 : -1;
+            return 0;
         });
     }
 
     private void sortTasksByName(List<Task> tasks, final boolean asc) {
-        Collections.sort(tasks, new Comparator<Task>() {
-            @Override
-            public int compare(Task t1, Task t2) {
-                String name1 = t1.getTitle();
-                String name2 = t2.getTitle();
-                if (asc)
-                    return name1.compareTo(name2);
-                else
-                    return name2.compareTo(name1);
-            }
+        tasks.sort((t1, t2) -> {
+            String name1 = t1.getTitle();
+            String name2 = t2.getTitle();
+            if (asc)
+                return name1.compareTo(name2);
+            else
+                return name2.compareTo(name1);
         });
     }
 
     @Override
     public void onItemClick(int position) {
         Task task = adapter.getTask(position);
-        if (task != null) {
-            Intent taskDetailIntent = new Intent(this, TaskInfoActivity.class);
-            taskDetailIntent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, task.getId());
-            startActivity(taskDetailIntent);
-        }
+        Intent taskDetailIntent = new Intent(this, TaskInfoActivity.class);
+        taskDetailIntent.putExtra(TaskInfoActivity.EXTRA_TASK_ID, task.getId());
+        startActivity(taskDetailIntent);
     }
 
     private static class RefreshTasksTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
@@ -410,21 +391,6 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                     boolean sortAsc = mTaskListActivity.sortAsc;
                     Filter filter = mTaskListActivity.filter;
 
-                    switch (sortType) {
-                        case PERCENT:
-                            mTaskListActivity.sortTasksByPercent(tasks, sortAsc);
-                            break;
-                        case NAME:
-                            mTaskListActivity.sortTasksByName(tasks, sortAsc);
-                            break;
-                        case DL_SPEED:
-                            mTaskListActivity.sortTasksByDlSpeed(tasks, sortAsc);
-                            break;
-                        case UL_SPEED:
-                            mTaskListActivity.sortTasksByUlSpeed(tasks, sortAsc);
-                            break;
-                    }
-
                     switch (filter) {
                         case BT:
                             tasks.removeIf(task -> !task.getType().toLowerCase().equals("bt"));
@@ -440,6 +406,21 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
                             break;
                         case EMULE:
                             tasks.removeIf(task -> !task.getType().toLowerCase().equals("emule"));
+                            break;
+                    }
+
+                    switch (sortType) {
+                        case PERCENT:
+                            mTaskListActivity.sortTasksByPercent(tasks, sortAsc);
+                            break;
+                        case NAME:
+                            mTaskListActivity.sortTasksByName(tasks, sortAsc);
+                            break;
+                        case DL_SPEED:
+                            mTaskListActivity.sortTasksByDlSpeed(tasks, sortAsc);
+                            break;
+                        case UL_SPEED:
+                            mTaskListActivity.sortTasksByUlSpeed(tasks, sortAsc);
                             break;
                     }
 
