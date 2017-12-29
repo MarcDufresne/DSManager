@@ -158,4 +158,6 @@
     <string name="login_button_label">Login</string>
     <string name="logo_content_description">logo</string>
     <string name="login_invalid_url">API URL is invalid, please enter a valid value.</string>
+
+    <string name="extra_add_task_data">extra_add_task_data</string>
 </resources>

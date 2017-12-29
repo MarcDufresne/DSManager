@@ -1,6 +1,8 @@
 package net.imatruck.dsmanager
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -16,9 +18,13 @@ import java.io.IOException
 
 class LoginActivity : AppCompatActivity() {
 
+    private var addTaskData: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        addTaskData = intent.getStringExtra(getString(R.string.extra_add_task_data))
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
@@ -65,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
 
     class LoginTask : AsyncTask<Call<AuthLoginBase>, Void, AuthLoginBase>() {
 
+        @SuppressLint("StaticFieldLeak")
         var mLoginActivity: LoginActivity? = null
 
         override fun doInBackground(vararg calls: Call<AuthLoginBase>): AuthLoginBase? {
@@ -101,7 +108,14 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
                     mLoginActivity!!.finish()
-                    val intent = Intent(mLoginActivity!!, TaskListActivity::class.java)
+                    val intent: Intent
+
+                    if (mLoginActivity!!.addTaskData != null) {
+                        intent = Intent(mLoginActivity!!, AddTaskActivity::class.java)
+                        intent.data = Uri.parse(mLoginActivity!!.addTaskData)
+                    } else {
+                        intent = Intent(mLoginActivity!!, TaskListActivity::class.java)
+                    }
                     mLoginActivity!!.startActivity(intent)
 
                 } else {

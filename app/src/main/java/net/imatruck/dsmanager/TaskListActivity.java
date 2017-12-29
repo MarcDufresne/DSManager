@@ -1,5 +1,6 @@
 package net.imatruck.dsmanager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -42,7 +43,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("unchecked")
 public class TaskListActivity extends AppCompatActivity implements TaskListOnClickListener {
 
     @BindView(R.id.task_list_view)
@@ -382,6 +383,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     private static class RefreshTasksTask extends AsyncTask<Call<DSTaskListBase>, Void, DSTaskListBase> {
 
+        @SuppressLint("StaticFieldLeak")
         TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs
@@ -478,6 +480,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     private static class GetStatsInfoTask extends AsyncTask<Call<DSStatsInfoBase>, Void, DSStatsInfoBase> {
 
+        @SuppressLint("StaticFieldLeak")
         TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs
@@ -513,6 +516,7 @@ public class TaskListActivity extends AppCompatActivity implements TaskListOnCli
 
     private static class LogoutTask extends AsyncTask<Call<AuthLogoutBase>, Void, AuthLogoutBase> {
 
+        @SuppressLint("StaticFieldLeak")
         TaskListActivity mTaskListActivity = null;
 
         @SafeVarargs

@@ -1,6 +1,7 @@
 package net.imatruck.dsmanager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,8 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +47,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 
+@SuppressWarnings("unchecked")
 public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
     private final static int READ_REQUEST_CODE = 90;
@@ -75,6 +79,9 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
         setContentView(R.layout.activity_add_task);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        Uri data = intent.getData();
+
         if (!BuildConfig.DEBUG) {
             radioFile.setVisibility(View.INVISIBLE);
         }
@@ -86,10 +93,29 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String sid = prefs.getString(getString(R.string.pref_key_sid), "");
+        if (sid.isEmpty()) {
+            Toast.makeText(this, getString(R.string.task_list_invalid_server_config),
+                    Toast.LENGTH_LONG).show();
+            finish();
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            if (data != null) {
+                loginIntent.putExtra(getString(R.string.extra_add_task_data), data.toString());
+            }
+            startActivity(loginIntent);
+            return;
+        }
+
         defaultDestination = prefs.getString(getString(R.string.pref_key_default_destination), null);
         editInputDestination.setText(defaultDestination);
 
         radioGroup.setOnCheckedChangeListener(this);
+
+        if (data != null) {
+            editInputUri.setText(data.toString());
+            radioUri.setChecked(true);
+        }
     }
 
     @Override
@@ -113,11 +139,17 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
 
             if (radioUri.isChecked() && !editInputUri.getText().toString().isEmpty()) {
                 Map<String, String> request = createUriRequest();
-                new AddNewTask().execute(synologyApi.dsTaskCreateUri(request));
+
+                AddNewTask addNewTask = new AddNewTask();
+                addNewTask.mAddTaskActivity = this;
+                addNewTask.execute(synologyApi.dsTaskCreateUri(request));
             } else if (radioFile.isChecked() && fileUri != null) {
                 Map<String, RequestBody> request = createFileRequest();
                 MultipartBody.Part file = prepareFile();
-                new AddNewTask().execute(synologyApi.dsTaskCreateFile(sidHeader, request, file));
+
+                AddNewTask addNewTask = new AddNewTask();
+                addNewTask.mAddTaskActivity = this;
+                addNewTask.execute(synologyApi.dsTaskCreateFile(sidHeader, request, file));
             }
         }
 
@@ -221,7 +253,10 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
         return displayName;
     }
 
-    private class AddNewTask extends AsyncTask<Call<DSTaskCreateBase>, Void, DSTaskCreateBase> {
+    private static class AddNewTask extends AsyncTask<Call<DSTaskCreateBase>, Void, DSTaskCreateBase> {
+
+        @SuppressLint("StaticFieldLeak")
+        AddTaskActivity mAddTaskActivity = null;
 
         @SafeVarargs
         @Override
@@ -241,18 +276,31 @@ public class AddTaskActivity extends AppCompatActivity implements RadioGroup.OnC
         protected void onPostExecute(DSTaskCreateBase dsTaskCreateBase) {
             if (dsTaskCreateBase != null) {
                 if (dsTaskCreateBase.isSuccess()) {
-                    Toast.makeText(AddTaskActivity.this, getString(R.string.toast_task_created),
+                    Toast.makeText(mAddTaskActivity,
+                            mAddTaskActivity.getString(R.string.toast_task_created),
                             Toast.LENGTH_SHORT).show();
-                    finish();
+                    Intent upIntent = NavUtils.getParentActivityIntent(mAddTaskActivity);
+                    if (upIntent == null) {
+                        mAddTaskActivity.finish();
+                        Intent intent = new Intent(mAddTaskActivity, TaskListActivity.class);
+                        mAddTaskActivity.startActivity(intent);
+                    } else if (NavUtils.shouldUpRecreateTask(mAddTaskActivity, upIntent)) {
+                        TaskStackBuilder.create(mAddTaskActivity)
+                                .addNextIntentWithParentStack(upIntent)
+                                .startActivities();
+                    } else {
+                        NavUtils.navigateUpTo(mAddTaskActivity, upIntent);
+                    }
                 } else {
-                    String text = getString(
+                    String text = mAddTaskActivity.getString(
                             SynologyDSTaskError.Companion.getMessageId(dsTaskCreateBase.getError().getCode()));
-                    Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(mAddTaskActivity.toolbar, text, Snackbar.LENGTH_LONG).show();
                 }
             } else {
-                String text = getString(R.string.synapi_error_1);
-                Snackbar.make(toolbar, text, Snackbar.LENGTH_LONG).show();
+                String text = mAddTaskActivity.getString(R.string.synapi_error_1);
+                Snackbar.make(mAddTaskActivity.toolbar, text, Snackbar.LENGTH_LONG).show();
             }
+            mAddTaskActivity = null;
         }
     }
 }
